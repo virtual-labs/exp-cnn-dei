@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNN Simulation: Data & Preprocessing</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style_refine.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar: Explanation & Theory -->
+        <aside class="sidebar glass-panel">
+            <header>
+                <h1>CNN Explorer</h1>
+                <h2>1. Data & Preprocessing</h2>
+            </header>
+
+            <div class="theory-content">
+                <section>
+                    <h3>The Nature of Images</h3>
+                    <p>
+                        To a computer, an image is just a grid of numbers (a <strong>tensor</strong>).
+                        Each pixel has 3 values (Red, Green, Blue) ranging from 0 to 255.
+                    </p>
+                </section>
+
+                <section>
+                    <h3>Why Preprocess?</h3>
+                    <p>
+                        Raw pixel values [0, 255] are often too large and uncentered for neural networks.
+                        <strong>Normalization</strong> shifts data to be centered around 0 with a smaller range (like -1
+                        to 1),
+                        speeding up generic descent.
+                    </p>
+                </section>
+
+                <section>
+                    <h3>Augmentation</h3>
+                    <p>
+                        We artificially expand our dataset by transforming existing images (flipping, cropping).
+                        This forces the model to learn invariant features, improving <strong>generalization</strong>.
+                    </p>
+                </section>
+            </div>
+
+            <footer>
+                <p>Simulation 1 of 5</p>
+                <div style="margin-top:10px;">
+                    <a href="simulation2.html"
+                        style="color:#60a5fa; text-decoration:none; font-weight:bold; border:1px solid #334155; padding:8px 16px; border-radius:6px; background:#0f172a; display:inline-block;">
+                        Next: Conv & Pooling ➡
+                    </a>
+                </div>
+            </footer>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+
+            <!-- Left Column: Input Selection & Controls -->
+            <section class="panel control-sidebar glass-panel">
+                <h3>1. Input Data</h3>
+                <div class="class-selector">
+                    <select id="classSelect">
+                        <option value="all">Filter: All</option>
+                        <option value="airplane">Airplane</option>
+                        <option value="automobile">Automobile</option>
+                        <option value="bird">Bird</option>
+                        <option value="cat">Cat</option>
+                        <option value="deer">Deer</option>
+                        <option value="dog">Dog</option>
+                        <option value="frog">Frog</option>
+                        <option value="horse">Horse</option>
+                        <option value="ship">Ship</option>
+                        <option value="truck">Truck</option>
+                    </select>
+                </div>
+                <div class="image-grid" id="imageGrid"></div>
+
+                <div class="control-group">
+                    <h3>2. Preprocessing</h3>
+                    <div class="control-header">
+                        <label class="switch">
+                            <input type="checkbox" id="normalizeCheck">
+                            <span class="slider round"></span>
+                        </label>
+                        <span>Normalize</span>
+                    </div>
+                    <div class="control-inputs disable-overlay" id="normInputs">
+                        <div class="input-pair">
+                            <label>Mean</label>
+                            <input type="text" id="meanInput" value="125, 122, 113">
+                        </div>
+                        <div class="input-pair">
+                            <label>Std</label>
+                            <input type="text" id="stdInput" value="51, 50, 51">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3>3. Augmentations</h3>
+                    <div class="aug-grid">
+                        <button class="aug-btn" data-aug="flipH">Flip Horz</button>
+                        <button class="aug-btn" data-aug="flipV">Flip Vert</button>
+                        <button class="aug-btn" data-aug="crop">Rand Crop</button>
+                        <button class="aug-btn" data-aug="shearX">Shear X</button>
+                        <button class="aug-btn" data-aug="shearY">Shear Y</button>
+                        <button class="aug-btn" data-aug="rotate">Rotate</button>
+                        <button class="aug-btn" data-aug="translate">Translate</button>
+                        <button class="aug-btn" data-aug="contrast">Contrast</button>
+                        <button class="aug-btn" data-aug="brightness">Brightness</button>
+                        <button class="aug-btn" data-aug="autoContrast">AutoContr</button>
+                        <button class="aug-btn" data-aug="invert">Invert</button>
+                        <button class="aug-btn" data-aug="equalize">Equalize</button>
+                        <button class="aug-btn" data-aug="solarize">Solarize</button>
+                        <button class="aug-btn" data-aug="posterize">Posterize</button>
+                    </div>
+                    <button id="btnResetAug" class="reset-btn">Reset All</button>
+                </div>
+            </section>
+
+            <!-- Center: Visual Stage (The Main Event) -->
+            <section class="panel stage-panel glass-panel">
+                <div class="stage-header">
+                    <h2>Transformation Pipeline</h2>
+                    <div class="pixel-info-bar">
+                        <div class="info-box" id="inputPixelInfo">Hover input...</div>
+                        <div class="info-box" id="outputPixelInfo">Hover output...</div>
+                    </div>
+                </div>
+
+                <div class="canvas-stage">
+                    <!-- Input -->
+                    <div class="stage-item">
+                        <span class="label">Original (32x32)</span>
+                        <div class="canvas-container">
+                            <canvas id="originalCanvas" width="32" height="32"></canvas>
+                            <div class="hover-guide" id="inputGuide"></div>
+                        </div>
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="stage-arrow">→</div>
+
+                    <!-- Output -->
+                    <div class="stage-item">
+                        <span class="label">Transformed Tensor</span>
+                        <div class="canvas-container">
+                            <canvas id="processedCanvas" width="32" height="32"></canvas>
+                            <div class="hover-guide" id="outputGuide"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats & Histograms moved below -->
+                <div class="analytics-row">
+                    <div class="stats-box">
+                        <h4>Channel Statistics</h4>
+                        <table id="statsTable">
+                            <thead>
+                                <tr>
+                                    <th>Ch</th>
+                                    <th>Min</th>
+                                    <th>Max</th>
+                                    <th>Mean</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="histogramCanvas"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/images.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

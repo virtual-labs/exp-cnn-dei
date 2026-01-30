@@ -1,0 +1,262 @@
+/* Layout Reused from Sim 2 */
+.app-container-4pane {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    height: 100vh;
+    background: var(--bg-dark);
+}
+
+.pane-theory {
+    border-right: 1px solid var(--panel-border);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    overflow: hidden;
+    height: 100%;
+}
+
+.theory-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.right-area-col {
+    display: grid;
+    grid-template-rows: 60% 40%;
+    /* Top Stage (Big) / Bottom Controls (Smaller) */
+    height: 100vh;
+}
+
+.pane-stage {
+    position: relative;
+    background: #0f172a;
+    /* Darker stage */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.sim-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid var(--panel-border);
+    z-index: 10;
+}
+
+.pane-bottom-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #1e293b;
+    border-top: 1px solid #334155;
+    height: 100%;
+}
+
+.pane-controls,
+.pane-math {
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+/* Visualization Container */
+.fc-visual-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    /* Start from left, scroll right */
+    padding: 2rem;
+    gap: 6rem;
+    /* Wide gap for lines */
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+    min-width: 0;
+}
+
+/* Nodes & LAYERS */
+.layer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    position: relative;
+    z-index: 2;
+    /* Removed background/padding to fix "translucent layer" issue */
+    /* background: rgba(15, 23, 42, 0.5); */
+    /* padding: 10px; */
+    border-radius: 12px;
+}
+
+.layer-label {
+    position: absolute;
+    top: -40px;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-align: center;
+    width: 150px;
+}
+
+/* 256 Input Nodes (Compact Grid) */
+#col-input {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    /* 8x32 grid approx */
+    gap: 2px;
+    padding: 5px;
+    border: 1px solid var(--panel-border);
+}
+
+.node {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #334155;
+    border: 1px solid #475569;
+    transition: all 0.3s ease;
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* Smaller nodes for the massive input layer */
+#col-input .node {
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    /* Square pixels for feature map feel */
+    border: none;
+}
+
+.node.active {
+    background: var(--accent-primary);
+    box-shadow: 0 0 8px var(--accent-primary);
+    border-color: #fff;
+    z-index: 5;
+}
+
+/* Dropout State */
+.node.dropout {
+    opacity: 0.2;
+    background: #ef4444;
+    /* Red tint for dead neuron */
+    transform: scale(0.8);
+    box-shadow: none;
+}
+
+/* SVG Line Overlay */
+.connections-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* Ideally matches container scroll width via JS */
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: visible;
+}
+
+line.connection {
+    stroke: #475569;
+    stroke-width: 1;
+    opacity: 0.1;
+    transition: stroke 0.3s, stroke-width 0.3s, opacity 0.3s;
+}
+
+line.connection.active-pos {
+    stroke: var(--accent-primary);
+    stroke-width: 2;
+    opacity: 0.6;
+}
+
+line.connection.active-neg {
+    stroke: var(--accent-secondary);
+    /* Pink for negative weights? */
+    stroke-width: 2;
+    opacity: 0.6;
+}
+
+/* Box Border Utility */
+.box-border {
+    border: 1px solid var(--panel-border);
+    padding: 0.75rem;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.mt-1 {
+    margin-top: 0.5rem;
+}
+
+/* Param Badge */
+.param-badge {
+    background: #334155;
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    border: 1px solid #475569;
+}
+
+/* Slider Row */
+.slider-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+}
+
+.slider-row span {
+    display: flex;
+    justify-content: space-between;
+}
+
+.slider-row input {
+    width: 100%;
+    accent-color: var(--accent-primary);
+}
+
+/* Controls */
+.controls-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.btn-group-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-group-row button {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--panel-border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.btn-group-row button.active {
+    background: var(--accent-primary);
+    color: #000;
+}
+
+.btn-play {
+    background: var(--accent-primary);
+    color: #000;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}

@@ -1,0 +1,488 @@
+:root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --secondary-color: #f3f4f6;
+    --border-color: #e5e7eb;
+    --code-bg: #f8fafc;
+    --sidebar-width: 280px;
+    --cell-max-width: 900px;
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: #fafafa;
+    /* Very light grey for subtle contrast */
+    border-right: 1px solid var(--border-color);
+    padding: 2rem;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 100;
+}
+
+.sidebar h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.sidebar p {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.btn {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.btn.primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn.primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn.secondary {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    color: #444;
+}
+
+.btn.secondary:hover {
+    background-color: #f9f9f9;
+}
+
+.status-panel {
+    margin-top: auto;
+}
+
+#progress-text {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    color: #666;
+}
+
+.progress-bar-container {
+    background-color: #e5e7eb;
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background-color: var(--primary-color);
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* Main Content */
+.notebook-container {
+    margin-left: var(--sidebar-width);
+    padding: 3rem 4rem;
+    flex: 1;
+    max-width: calc(100% - var(--sidebar-width));
+    overflow-y: auto;
+}
+
+.cell {
+    max-width: var(--cell-max-width);
+    margin: 0 auto 2rem;
+    background: white;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 0;
+    /* Control padding in children */
+    position: relative;
+    transition: box-shadow 0.2s;
+}
+
+.cell:hover {
+    /* Subtle lift for focus */
+    /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); */
+}
+
+/* Markdown Cells */
+.cell.markdown {
+    padding: 1rem 1.5rem;
+}
+
+.cell.markdown h1,
+.cell.markdown h2,
+.cell.markdown h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #111;
+}
+
+.cell.markdown p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+    color: #374151;
+}
+
+/* ---------------------------
+   4. Code Cells (Dark Theme)
+--------------------------- */
+.cell.code {
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-area {
+    background-color: #282c34;
+    /* Atom One Dark background */
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    position: relative;
+    color: #abb2bf;
+    /* Atom One Dark text */
+    overflow-x: auto;
+    /* Horizontal scroll fix */
+}
+
+/* Run Button */
+.run-cell-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: #333;
+    border: 1px solid #555;
+    color: #e5e7eb;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.cell.code:hover .run-cell-btn {
+    opacity: 1;
+}
+
+.run-cell-btn:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.run-cell-btn:disabled {
+    cursor: not-allowed;
+    background-color: #2a2a2a;
+    border-color: #444;
+    color: #666;
+    opacity: 0.5;
+}
+
+/* Code Highlighting Overrides for Dark Theme */
+pre code.hljs {
+    padding: 0;
+    background: transparent;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: inherit;
+}
+
+/* Execution Indicator ([ ]) */
+.exec-count {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #9ca3af;
+    position: absolute;
+    top: 1.1rem;
+    left: -2.5rem;
+    width: 2rem;
+    text-align: right;
+    user-select: none;
+}
+
+.cell.code {
+    margin-left: 2.5rem;
+}
+
+.cell.markdown {
+    margin-left: 2.5rem;
+}
+
+/* ---------------------------
+   5. Output Area
+--------------------------- */
+.output-area {
+    background-color: #ffffff;
+    /* Contrast: White output area */
+    border-top: 1px solid var(--border-color);
+    padding: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    display: none;
+}
+
+.output-area.visible {
+    display: block;
+    animation: fadeIn 0.3s;
+}
+
+.output-text {
+    white-space: pre-wrap;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+    max-height: 400px;
+    /* Limit height */
+    overflow-y: auto;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.output-image {
+    text-align: center;
+    overflow-x: auto;
+}
+
+.output-image img {
+    max-width: 100%;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------------------
+   6. Table of Contents (TOC)
+--------------------------- */
+.toc-list {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    margin-bottom: 1rem;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+.toc-item {
+    font-size: 0.85rem;
+    color: #555;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.2s, color 0.2s;
+    line-height: 1.3;
+}
+
+.toc-item:hover {
+    background-color: #eee;
+    color: #111;
+}
+
+.toc-item.active {
+    background-color: #e0e7ff;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Indentation based on header level */
+.toc-item.h1 {
+    margin-left: 0;
+    font-weight: 700;
+    margin-top: 0.5rem;
+}
+
+.toc-item.h2 {
+    margin-left: 0.5rem;
+    font-weight: 600;
+}
+
+.toc-item.h3 {
+    margin-left: 1.2rem;
+}
+
+/* Status Indicators in TOC */
+.toc-status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    /* Pending (grey) */
+    flex-shrink: 0;
+}
+
+.toc-status.completed {
+    background-color: #10b981;
+    /* Green */
+}
+
+.toc-status.running {
+    background-color: var(--primary-color);
+    /* Blue */
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.9);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0.9);
+        opacity: 0.7;
+    }
+}
+
+/* ---------------------------
+   7. Loading / Running States
+--------------------------- */
+.cell.running .run-cell-btn {
+    opacity: 1;
+    pointer-events: none;
+    background-color: transparent;
+    color: transparent;
+    border: none;
+}
+
+.cell.running .run-cell-btn::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #666;
+    /* Visible on dark bg */
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.loading-spinner {
+    text-align: center;
+    color: #666;
+    margin-top: 4rem;
+}
+
+/* ---------------------------
+   8. Responsive Layout
+--------------------------- */
+@media (max-width: 1024px) {
+    :root {
+        --sidebar-width: 240px;
+        --cell-max-width: 100%;
+    }
+
+    .notebook-container {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .toc-list {
+        display: none;
+        /* Hide TOC on mobile to save space, or make collapsible */
+    }
+
+    .notebook-container {
+        margin-left: 0;
+        padding: 1.5rem;
+        max-width: 100%;
+    }
+
+    .cell.code,
+    .cell.markdown {
+        margin-left: 0;
+        /* Remove indent on mobile */
+    }
+
+    .exec-count {
+        position: static;
+        text-align: left;
+        margin-bottom: 0.25rem;
+        font-size: 0.75rem;
+        width: auto;
+    }
+}

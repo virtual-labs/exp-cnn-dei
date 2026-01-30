@@ -1,0 +1,20 @@
+Preparing Data...
+Building Model...
+Optimizer: adam, LR: 0.00182
+Starting Training...
+Epoch 1/15: Train Acc 43.08%, Test Acc 40.14%
+Epoch 2/15: Train Acc 42.92%, Test Acc 27.66%
+Epoch 3/15: Train Acc 38.16%, Test Acc 33.83%
+Epoch 4/15: Train Acc 37.45%, Test Acc 27.79%
+Epoch 5/15: Train Acc 39.07%, Test Acc 35.91%
+Epoch 6/15: Train Acc 39.24%, Test Acc 34.70%
+Epoch 7/15: Train Acc 42.03%, Test Acc 40.50%
+Epoch 8/15: Train Acc 45.13%, Test Acc 35.83%
+Epoch 9/15: Train Acc 48.17%, Test Acc 40.10%
+Epoch 10/15: Train Acc 50.17%, Test Acc 54.67%
+Epoch 11/15: Train Acc 53.33%, Test Acc 50.56%
+Epoch 12/15: Train Acc 56.10%, Test Acc 62.04%
+Epoch 13/15: Train Acc 59.14%, Test Acc 65.33%
+Epoch 14/15: Train Acc 62.57%, Test Acc 68.42%
+Epoch 15/15: Train Acc 64.49%, Test Acc 69.20%
+Experiment Complete.

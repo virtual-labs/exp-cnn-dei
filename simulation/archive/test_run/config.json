@@ -1,0 +1,17 @@
+{
+    "output_dir": "/home/onkar/.gemini/antigravity/scratch/cnn_playground/test_run",
+    "augmentation": "yes",
+    "normalization": "yes",
+    "num_blocks": 6,
+    "num_fc_layers": 1,
+    "filters_scale": 1.0,
+    "dropout": "yes",
+    "activation": "relu",
+    "epochs": 1,
+    "batch_size": 128,
+    "lr": 0.001,
+    "padding": 4,
+    "optimizer": "adam",
+    "scheduler": "onecycle",
+    "weight_decay": 0.0001
+}

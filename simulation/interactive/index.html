@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNN Simulator - Interactive Deep Learning</title>
+
+    <!-- SEO -->
+    <meta name="description"
+        content="Interactive CNN simulator for learning deep learning concepts including data preprocessing, convolution operations, and neural network classifiers.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Unified White Theme CSS -->
+    <link rel="stylesheet" href="css/simulations.css">
+</head>
+
+<body>
+    <!-- Tab Navigation -->
+    <nav class="tab-navigation">
+        <div class="logo">
+            <span>CNN</span> Simulator
+        </div>
+        <button class="tab-btn active" data-tab="sim1">
+            1. Data & Preprocessing
+        </button>
+        <button class="tab-btn" data-tab="sim2">
+            2. Convolution & Pooling
+        </button>
+        <button class="tab-btn" data-tab="sim3">
+            3. Dense & Classifier
+        </button>
+        <a href="../notebook/index.html" class="tab-btn" style="margin-left: auto; text-decoration: none;">
+            ← Back to Notebook
+        </a>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+
+        <!-- ============================================ -->
+        <!-- SIMULATION 1: Data & Preprocessing -->
+        <!-- ============================================ -->
+        <div id="sim1" class="tab-content active">
+            <div class="app-container">
+                <!-- Sidebar: Explanation & Theory -->
+                <aside class="sidebar glass-panel">
+                    <header>
+                        <h1>CNN Explorer</h1>
+                        <h2>1. Data & Preprocessing</h2>
+                    </header>
+
+                    <div class="theory-content">
+                        <section>
+                            <h3>The Nature of Images</h3>
+                            <p>
+                                To a computer, an image is just a grid of numbers (a <strong>tensor</strong>).
+                                Each pixel has 3 values (Red, Green, Blue) ranging from 0 to 255.
+                            </p>
+                        </section>
+
+                        <section>
+                            <h3>Why Preprocess?</h3>
+                            <p>
+                                Raw pixel values [0, 255] are often too large and uncentered for neural networks.
+                                <strong>Normalization</strong> shifts data to be centered around 0 with a smaller range
+                                (like -1 to 1),
+                                speeding up gradient descent.
+                            </p>
+                        </section>
+
+                        <section>
+                            <h3>Augmentation</h3>
+                            <p>
+                                We artificially expand our dataset by transforming existing images (flipping, cropping).
+                                This forces the model to learn invariant features, improving
+                                <strong>generalization</strong>.
+                            </p>
+                        </section>
+                    </div>
+
+                    <footer>
+                        <p style="color: var(--text-muted); font-size: 0.85rem;">Step 1 of 3</p>
+                    </footer>
+                </aside>
+
+                <!-- Main Workspace -->
+                <main class="workspace">
+                    <!-- Left Column: Input Selection & Controls -->
+                    <section class="panel control-sidebar glass-panel">
+                        <h3>1. Input Data</h3>
+                        <div class="class-selector">
+                            <select id="classSelect">
+                                <option value="all">Filter: All</option>
+                                <option value="airplane">Airplane</option>
+                                <option value="automobile">Automobile</option>
+                                <option value="bird">Bird</option>
+                                <option value="cat">Cat</option>
+                                <option value="deer">Deer</option>
+                                <option value="dog">Dog</option>
+                                <option value="frog">Frog</option>
+                                <option value="horse">Horse</option>
+                                <option value="ship">Ship</option>
+                                <option value="truck">Truck</option>
+                            </select>
+                        </div>
+                        <div class="image-grid" id="imageGrid"></div>
+
+                        <div class="control-group">
+                            <h3>2. Preprocessing</h3>
+                            <div class="control-header">
+                                <label class="switch">
+                                    <input type="checkbox" id="normalizeCheck">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span>Normalize</span>
+                            </div>
+                            <div class="control-inputs disable-overlay" id="normInputs">
+                                <div class="input-pair">
+                                    <label>Mean</label>
+                                    <input type="text" id="meanInput" value="125, 122, 113">
+                                </div>
+                                <div class="input-pair">
+                                    <label>Std</label>
+                                    <input type="text" id="stdInput" value="51, 50, 51">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <h3>3. Augmentations</h3>
+                            <div class="aug-grid">
+                                <button class="aug-btn" data-aug="flipH">Flip Horz</button>
+                                <button class="aug-btn" data-aug="flipV">Flip Vert</button>
+                                <button class="aug-btn" data-aug="crop">Rand Crop</button>
+                                <button class="aug-btn" data-aug="shearX">Shear X</button>
+                                <button class="aug-btn" data-aug="shearY">Shear Y</button>
+                                <button class="aug-btn" data-aug="rotate">Rotate</button>
+                                <button class="aug-btn" data-aug="translate">Translate</button>
+                                <button class="aug-btn" data-aug="contrast">Contrast</button>
+                                <button class="aug-btn" data-aug="brightness">Brightness</button>
+                                <button class="aug-btn" data-aug="autoContrast">AutoContr</button>
+                                <button class="aug-btn" data-aug="invert">Invert</button>
+                                <button class="aug-btn" data-aug="equalize">Equalize</button>
+                                <button class="aug-btn" data-aug="solarize">Solarize</button>
+                                <button class="aug-btn" data-aug="posterize">Posterize</button>
+                            </div>
+                            <button id="btnResetAug" class="reset-btn">Reset All</button>
+                        </div>
+                    </section>
+
+                    <!-- Center: Visual Stage -->
+                    <section class="panel stage-panel glass-panel">
+                        <div class="stage-header">
+                            <h2>Transformation Pipeline</h2>
+                            <div class="pixel-info-bar">
+                                <div class="info-box" id="inputPixelInfo">Hover input...</div>
+                                <div class="info-box" id="outputPixelInfo">Hover output...</div>
+                            </div>
+                        </div>
+
+                        <div class="canvas-stage">
+                            <!-- Input -->
+                            <div class="stage-item">
+                                <span class="label">Original (32×32)</span>
+                                <div class="canvas-container">
+                                    <canvas id="originalCanvas" width="32" height="32"></canvas>
+                                    <div class="hover-guide" id="inputGuide"></div>
+                                </div>
+                            </div>
+
+                            <!-- Arrow -->
+                            <div class="stage-arrow">→</div>
+
+                            <!-- Output -->
+                            <div class="stage-item">
+                                <span class="label">Transformed Tensor</span>
+                                <div class="canvas-container">
+                                    <canvas id="processedCanvas" width="32" height="32"></canvas>
+                                    <div class="hover-guide" id="outputGuide"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stats & Histograms -->
+                        <div class="analytics-row">
+                            <div class="stats-box">
+                                <h4>Channel Statistics</h4>
+                                <table id="statsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Ch</th>
+                                            <th>Min</th>
+                                            <th>Max</th>
+                                            <th>Mean</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <div class="chart-box">
+                                <canvas id="histogramCanvas"></canvas>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+
+            <!-- Collapsible Controls Drawer (Small Screens) -->
+            <div class="controls-drawer" id="drawer1">
+                <button class="drawer-toggle" onclick="this.parentElement.classList.toggle('open')">
+                    <span class="chevron">▲</span> Controls
+                </button>
+                <div class="drawer-content">
+                    <div class="control-group">
+                        <h3>Input Data</h3>
+                        <select id="classSelectDrawer"
+                            onchange="document.getElementById('classSelect').value = this.value; document.getElementById('classSelect').dispatchEvent(new Event('change'))">
+                            <option value="all">Filter: All</option>
+                            <option value="airplane">Airplane</option>
+                            <option value="automobile">Automobile</option>
+                            <option value="bird">Bird</option>
+                            <option value="cat">Cat</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <h3>Preprocessing</h3>
+                        <label style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" id="normalizeCheckDrawer"
+                                onchange="document.getElementById('normalizeCheck').checked = this.checked; document.getElementById('normalizeCheck').dispatchEvent(new Event('change'))">
+                            Normalize
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <h3>Augmentations</h3>
+                        <div class="aug-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
+                            <button class="aug-btn" data-aug="flipH" style="font-size: 0.7rem; padding: 4px;">Flip
+                                H</button>
+                            <button class="aug-btn" data-aug="flipV" style="font-size: 0.7rem; padding: 4px;">Flip
+                                V</button>
+                            <button class="aug-btn" data-aug="rotate"
+                                style="font-size: 0.7rem; padding: 4px;">Rotate</button>
+                            <button class="aug-btn" data-aug="crop"
+                                style="font-size: 0.7rem; padding: 4px;">Crop</button>
+                            <button class="aug-btn" data-aug="brightness"
+                                style="font-size: 0.7rem; padding: 4px;">Bright</button>
+                            <button class="aug-btn" data-aug="contrast"
+                                style="font-size: 0.7rem; padding: 4px;">Contrast</button>
+                        </div>
+                        <button class="reset-btn" style="margin-top: 8px; width: 100%;"
+                            onclick="document.getElementById('btnResetAug').click()">Reset All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SIMULATION 2: Convolution & Pooling -->
+        <!-- ============================================ -->
+        <div id="sim2" class="tab-content">
+            <div class="app-container-4pane">
+                <!-- LEFT PANE: Theory -->
+                <aside class="pane-theory glass-panel">
+                    <header>
+                        <h1>ConvNet Theory</h1>
+                    </header>
+                    <div id="theoryContent" class="theory-scroll">
+                        <!-- Populated by JS -->
+                    </div>
+                    <footer>
+                        <p style="color: var(--text-muted); font-size: 0.85rem;">Step 2 of 3</p>
+                    </footer>
+                </aside>
+
+                <!-- RIGHT AREA WRAPPER -->
+                <div class="right-area-col">
+                    <!-- TOP PANE: Sequential Simulation Chain -->
+                    <section class="pane-stage">
+                        <div class="sim-header">
+                            <span id="layerTitle">ConvNet Architecture</span>
+                            <div class="stage-controls">
+                                <button id="btnReset" class="btn-warning" title="Reset Simulation">↺ Reset</button>
+                                <button id="btnPlay" class="btn-play" title="Play/Pause">▶ Play</button>
+                                <button id="btnStep" class="btn-secondary" title="Step">Step</button>
+                                <button id="btnFinish" class="btn-danger" title="Finish Layer">Finish Layer</button>
+
+                                <div class="nav-group">
+                                    <button id="btnPrevBlock" class="btn-nav" disabled>⬅ Prev</button>
+                                    <button id="btnNextBlock" class="btn-nav">Next ➡</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="visual-chain horizontal-flow" id="visualChain">
+                            <!-- Generated by JS -->
+                        </div>
+                    </section>
+
+                    <!-- BOTTOM SPLIT (Controls | Math) - Collapsible -->
+                    <div class="bottom-panel-wrapper">
+                        <button class="bottom-panel-toggle" onclick="this.parentElement.classList.toggle('collapsed')">
+                            <span class="chevron">▼</span> Controls & Parameters
+                        </button>
+                        <section class="pane-bottom-split">
+                            <!-- BOTTOM LEFT: Controls -->
+                            <div class="pane-controls glass-panel">
+                                <h3>Layer Parameters <span id="ctrlBlockName" class="badge">Layer 0</span></h3>
+                                <div class="controls-grid">
+                                    <div class="c-group">
+                                        <label>Kernel Size</label>
+                                        <input type="number" id="ctrlKernel" min="1" max="7" value="5" step="2">
+                                    </div>
+                                    <div class="c-group">
+                                        <label>Filters</label>
+                                        <input type="number" id="ctrlFilters" min="1" max="512" value="64">
+                                    </div>
+                                    <div class="c-group">
+                                        <label>Stride</label>
+                                        <input type="number" id="ctrlStride" min="1" max="5" value="1">
+                                    </div>
+                                    <div class="c-group">
+                                        <label>Padding</label>
+                                        <input type="number" id="ctrlPad" min="0" max="5" value="2">
+                                    </div>
+                                    <div class="c-group">
+                                        <label>Pooling</label>
+                                        <select id="ctrlPool">
+                                            <option value="none">None</option>
+                                            <option value="max">Max Pool (2×2)</option>
+                                            <option value="avg">Avg Pool (2×2)</option>
+                                        </select>
+                                    </div>
+                                    <div class="c-group">
+                                        <label>Activation</label>
+                                        <button id="btnToggleAct" class="btn-toggle active">ReLU</button>
+                                    </div>
+                                </div>
+
+                                <div class="global-opts">
+                                    <label>Input Image:</label>
+                                    <select id="imageSelect"></select>
+                                    <label>Speed:</label>
+                                    <input type="range" id="speedRange" min="0" max="1000" step="10" value="500">
+                                </div>
+                            </div>
+
+                            <!-- BOTTOM RIGHT: Math Engine -->
+                            <div class="pane-math glass-panel">
+                                <h3>Calculation Engine</h3>
+                                <div class="math-content">
+                                    <div class="math-eq-general">
+                                        Output(x,y) = Σ (Input × Weight) + Bias
+                                    </div>
+                                    <div class="math-dynamic">
+                                        <div id="mathDetail" class="math-detail-box">
+                                            Hover/Drag input to see math...
+                                        </div>
+                                        <div class="math-final-res">
+                                            Bias: <span id="mathBiasVal">0.1</span> <br>
+                                            Result: <span id="mathResVal" class="highlight-val">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collapsible Controls Drawer (Small Screens) -->
+            <div class="controls-drawer" id="drawer2">
+                <button class="drawer-toggle" onclick="this.parentElement.classList.toggle('open')">
+                    <span class="chevron">▲</span> Controls
+                </button>
+                <div class="drawer-content">
+                    <div class="control-group">
+                        <h3>Playback</h3>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button onclick="document.getElementById('btnPlay').click()"
+                                style="flex: 1; padding: 8px;">▶ Play</button>
+                            <button onclick="document.getElementById('btnStep').click()"
+                                style="flex: 1; padding: 8px;">Step</button>
+                            <button onclick="document.getElementById('btnReset').click()"
+                                style="flex: 1; padding: 8px;">Reset</button>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <h3>Layer Parameters</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <label>Kernel: <input type="number" value="5" min="1" max="7" step="2" style="width: 50px;"
+                                    onchange="document.getElementById('ctrlKernel').value = this.value"></label>
+                            <label>Filters: <input type="number" value="64" min="1" max="512" style="width: 50px;"
+                                    onchange="document.getElementById('ctrlFilters').value = this.value"></label>
+                            <label>Stride: <input type="number" value="1" min="1" max="5" style="width: 50px;"
+                                    onchange="document.getElementById('ctrlStride').value = this.value"></label>
+                            <label>Padding: <input type="number" value="2" min="0" max="5" style="width: 50px;"
+                                    onchange="document.getElementById('ctrlPad').value = this.value"></label>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <h3>Navigation</h3>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="document.getElementById('btnPrevBlock').click()"
+                                style="flex: 1; padding: 8px;">⬅ Prev</button>
+                            <button onclick="document.getElementById('btnNextBlock').click()"
+                                style="flex: 1; padding: 8px;">Next ➡</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SIMULATION 3: Dense & Classifier -->
+        <!-- ============================================ -->
+        <div id="sim3" class="tab-content">
+            <div class="app-container-4pane">
+                <!-- LEFT PANE: Theory -->
+                <aside class="pane-theory glass-panel">
+                    <header>
+                        <h1>The Classifier Head</h1>
+                    </header>
+                    <div id="theoryContent3" class="theory-scroll">
+                        <h2 style="font-size: 1rem; margin-bottom: 1rem; color: var(--text-main);">Intuitive
+                            Explanation
+                        </h2>
+                        <div class="theory-section intro">
+                            <p>The <strong>Fully Connected (FC) head</strong> takes everything the CNN has detected
+                                and
+                                considers it all at once.</p>
+                        </div>
+
+                        <div class="theory-step">
+                            <h3>1. Flattening / Pooling</h3>
+                            <p>Removes spatial structure, turning feature maps into a single list of evidence.</p>
+                        </div>
+
+                        <div class="theory-step">
+                            <h3>2. Global Reasoning</h3>
+                            <p>Each neuron asks: <em>"How much do these combined features support a specific
+                                    idea?"</em>
+                                Weights decide which features matter and how strongly they vote.</p>
+                        </div>
+
+                        <div class="theory-step">
+                            <h3>3. Logits & Decisions</h3>
+                            <p>Logits are raw class evidence; the highest one wins after normalization. Bigger heads
+                                can
+                                model more complex combinations but are easier to overfit.</p>
+                        </div>
+
+                        <p class="highlight-text" style="margin-top: 1rem;">In short: the FC head is a global
+                            decision-maker that turns extracted features into class scores.</p>
+                    </div>
+                    <footer>
+                        <p style="color: var(--text-muted); font-size: 0.85rem;">Step 3 of 3</p>
+                    </footer>
+                </aside>
+
+                <!-- RIGHT AREA WRAPPER -->
+                <div class="right-area-col">
+                    <!-- TOP PANE: Network Visualization -->
+                    <section class="pane-stage" id="stagePane3">
+                        <div class="sim-header">
+                            <span id="layerTitle3">Classification Head (GAP → Dense → Softmax)</span>
+                            <div class="stage-controls">
+                                <div class="param-badge" id="paramCountBadge">Params: 0</div>
+                                <button id="btnPredict" class="btn-play">▶ Predict</button>
+                            </div>
+                        </div>
+
+                        <div class="fc-visual-container" id="fcVisual">
+                            <!-- Generated by JS -->
+                        </div>
+                    </section>
+
+                    <!-- BOTTOM SPLIT (Controls | Math) - Collapsible -->
+                    <div class="bottom-panel-wrapper">
+                        <button class="bottom-panel-toggle" onclick="this.parentElement.classList.toggle('collapsed')">
+                            <span class="chevron">▼</span> Controls & Configuration
+                        </button>
+                        <section class="pane-bottom-split">
+                            <!-- BOTTOM LEFT: Controls -->
+                            <div class="pane-controls glass-panel">
+                                <h3>Configuration <span class="badge">Modern Head</span></h3>
+
+                                <div class="controls-grid" style="grid-template-columns: 1fr;">
+                                    <!-- Input Selection -->
+                                    <div class="c-group">
+                                        <label>Input Feature Map</label>
+                                        <select id="classSelect3">
+                                            <option value="car">Car (Valid Features)</option>
+                                            <option value="dog">Dog (Fur, Snout)</option>
+                                            <option value="plane">Plane (Wings, Sky)</option>
+                                            <option value="noise">Random Noise</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Architecture Controls -->
+                                    <div class="c-group box-border">
+                                        <label>Architecture</label>
+                                        <div class="btn-group-row">
+                                            <button id="btnAddLayer" class="btn-secondary" title="Add Hidden Layer">+
+                                                Layer</button>
+                                            <button id="btnRemLayer" class="btn-secondary" title="Remove Hidden Layer">-
+                                                Layer</button>
+                                        </div>
+                                        <div class="slider-row" style="margin-top: 0.5rem;">
+                                            <span>Hidden Units: <strong id="valNeurons">12</strong></span>
+                                            <input type="range" id="sldNeurons" min="4" max="32" value="12">
+                                        </div>
+                                    </div>
+
+                                    <!-- Hyperparameters -->
+                                    <div class="c-group box-border">
+                                        <label>Hyperparameters</label>
+                                        <div class="slider-row">
+                                            <span>Dropout: <strong id="valDropout">0.38</strong></span>
+                                            <input type="range" id="sldDropout" min="0" max="0.9" step="0.05"
+                                                value="0.38">
+                                        </div>
+                                        <div class="btn-group-row mt-1">
+                                            <button class="btn-act active" data-act="relu">ReLU</button>
+                                            <button class="btn-act" data-act="sigmoid">Sigmoid</button>
+                                            <button class="btn-act" data-act="tanh">Tanh</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="c-group">
+                                        <label>Weights</label>
+                                        <div class="btn-group-row">
+                                            <button id="btnInitRandom" class="btn-secondary">Random</button>
+                                            <button id="btnPreTrained" class="btn-primary active">Pre-Trained</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- BOTTOM RIGHT: Math Engine -->
+                            <div class="pane-math glass-panel">
+                                <h3>Math: Dense Layer</h3>
+                                <div class="math-content">
+                                    <div class="math-eq-general">
+                                        <span class="math-var">a</span><sup>[l]</sup> = <span
+                                            class="math-func">g</span>(
+                                        <span class="math-var">W</span><sup>[l]</sup> <span
+                                            class="math-var">a</span><sup>[l-1]</sup> + <span
+                                            class="math-var">b</span><sup>[l]</sup> )
+                                    </div>
+                                    <div id="mathDetail3" class="math-detail-box">
+                                        <p class="text-muted">Hover over nodes or lines to see the logic.</p>
+                                        <ul
+                                            style="padding-left: 15px; margin-top: 8px; font-size: 0.85rem; line-height: 1.8;">
+                                            <li><strong>GAP:</strong> 256 spatial maps averaged to 1 value each.</li>
+                                            <li><strong>Dropout:</strong> Randomly zeros out neurons during training.
+                                            </li>
+                                            <li><strong>Linear:</strong> Weighted sum of all inputs.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collapsible Controls Drawer (Small Screens) -->
+            <div class="controls-drawer" id="drawer3">
+                <button class="drawer-toggle" onclick="this.parentElement.classList.toggle('open')">
+                    <span class="chevron">▲</span> Controls
+                </button>
+                <div class="drawer-content">
+                    <div class="control-group">
+                        <h3>Predict</h3>
+                        <button onclick="document.getElementById('btnPredict').click()"
+                            style="width: 100%; padding: 10px; font-weight: bold;">▶ Run Prediction</button>
+                    </div>
+                    <div class="control-group">
+                        <h3>Architecture</h3>
+                        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                            <button onclick="document.getElementById('btnAddLayer').click()"
+                                style="flex: 1; padding: 8px;">+ Layer</button>
+                            <button onclick="document.getElementById('btnRemLayer').click()"
+                                style="flex: 1; padding: 8px;">- Layer</button>
+                        </div>
+                        <label style="display: block; margin-top: 8px;">
+                            Hidden Units: <span id="valNeuronsDrawer">12</span>
+                            <input type="range" min="4" max="32" value="12" style="width: 100%;"
+                                oninput="document.getElementById('valNeuronsDrawer').textContent = this.value; document.getElementById('sldNeurons').value = this.value; document.getElementById('sldNeurons').dispatchEvent(new Event('input'))">
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <h3>Input</h3>
+                        <select style="width: 100%; padding: 8px;"
+                            onchange="document.getElementById('classSelect3').value = this.value; document.getElementById('classSelect3').dispatchEvent(new Event('change'))">
+                            <option value="car">Car</option>
+                            <option value="dog">Dog</option>
+                            <option value="plane">Plane</option>
+                            <option value="noise">Random Noise</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/image-loader.js"></script>
+    <script src="js/tabs.js"></script>
+    <script src="js/sim-data-preprocessing.js"></script>
+    <script src="js/sim-convolution.js"></script>
+    <script src="js/sim-classifier.js"></script>
+</body>
+
+</html>

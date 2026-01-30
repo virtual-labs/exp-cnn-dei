@@ -1,0 +1,175 @@
+{
+  "version": 2.0,
+  "questions": [
+    {
+      "question": "Why is data augmentation used while training a CNN on the CIFAR-10 dataset?",
+      "answers": {
+        "a": "To increase the number of test samples",
+        "b": "To create diverse variations of training images",
+        "c": "To reduce the number of classes",
+        "d": "To replace normalization"
+      },
+      "explanations": {
+        "a": "Incorrect because augmentation is applied only to the training data, not the test data.",
+        "b": "Correct because augmentation generates modified versions of existing images, improving generalization.",
+        "c": "Incorrect because augmentation does not change the number of classes.",
+        "d": "Incorrect because augmentation and normalization serve different purposes."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "What is the main advantage of using convolutional layers instead of fully connected layers for images?",
+      "answers": {
+        "a": "They require more parameters",
+        "b": "They preserve spatial relationships between pixels",
+        "c": "They eliminate the need for training",
+        "d": "They directly perform classification"
+      },
+      "explanations": {
+        "a": "Incorrect because convolutional layers significantly reduce the number of parameters.",
+        "b": "Correct because convolution operates on local neighborhoods and maintains spatial structure.",
+        "c": "Incorrect because CNNs still require training through backpropagation.",
+        "d": "Incorrect because classification is done by the final layers."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Why is normalization applied to CIFAR-10 images before training the CNN?",
+      "answers": {
+        "a": "To convert images into grayscale",
+        "b": "To scale pixel values for stable and faster training",
+        "c": "To reduce the dataset size",
+        "d": "To remove noise from images"
+      },
+      "explanations": {
+        "a": "Incorrect because normalization does not change the number of channels.",
+        "b": "Correct because normalized inputs improve gradient stability and convergence.",
+        "c": "Incorrect because normalization does not affect the dataset size.",
+        "d": "Incorrect because normalization does not perform denoising."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "What is the purpose of pooling layers in a CNN architecture?",
+      "answers": {
+        "a": "To increase spatial resolution",
+        "b": "To reduce computational complexity and overfitting",
+        "c": "To introduce non-linearity",
+        "d": "To classify images"
+      },
+      "explanations": {
+        "a": "Incorrect because pooling reduces spatial dimensions.",
+        "b": "Correct because pooling downsamples feature maps and reduces parameters.",
+        "c": "Incorrect because activation functions provide non-linearity.",
+        "d": "Incorrect because classification is handled by the final layer."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Why is ReLU commonly used as an activation function in CNNs?",
+      "answers": {
+        "a": "It converts outputs into probabilities",
+        "b": "It helps mitigate the vanishing gradient problem",
+        "c": "It performs feature extraction",
+        "d": "It replaces pooling layers"
+      },
+      "explanations": {
+        "a": "Incorrect because softmax performs probability conversion.",
+        "b": "Correct because ReLU maintains strong gradients for positive activations.",
+        "c": "Incorrect because convolution extracts features, not activation functions.",
+        "d": "Incorrect because activation and pooling are separate operations."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "What role does Global Average Pooling play in the CNN model used in this experiment?",
+      "answers": {
+        "a": "It increases the number of trainable parameters",
+        "b": "It aggregates spatial information before classification",
+        "c": "It replaces convolution layers",
+        "d": "It performs data augmentation"
+      },
+      "explanations": {
+        "a": "Incorrect because it reduces parameters.",
+        "b": "Correct because it summarizes each feature map into a single value.",
+        "c": "Incorrect because it operates after feature extraction.",
+        "d": "Incorrect because augmentation is a preprocessing step."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Why is the CIFAR-10 dataset considered challenging for CNN models?",
+      "answers": {
+        "a": "Because images are very large",
+        "b": "Because images have no labels",
+        "c": "Because images are low resolution with high inter-class similarity",
+        "d": "Because it contains only grayscale images"
+      },
+      "explanations": {
+        "a": "Incorrect because CIFAR-10 images are small.",
+        "b": "Incorrect because CIFAR-10 is a labeled dataset.",
+        "c": "Correct because small images and similar classes increase classification difficulty.",
+        "d": "Incorrect because CIFAR-10 contains RGB images."
+      },
+      "correctAnswer": "c",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "What information does a confusion matrix provide in CNN evaluation?",
+      "answers": {
+        "a": "Training speed of the model",
+        "b": "Correct and incorrect class-wise predictions",
+        "c": "Loss function values",
+        "d": "Learning rate changes"
+      },
+      "explanations": {
+        "a": "Incorrect because speed is not shown in a confusion matrix.",
+        "b": "Correct because it shows how predictions are distributed across classes.",
+        "c": "Incorrect because loss is not displayed in a confusion matrix.",
+        "d": "Incorrect because the learning rate is not represented."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Why are training and testing accuracy curves plotted after CNN training?",
+      "answers": {
+        "a": "To increase model accuracy",
+        "b": "To visualize learning behavior and detect overfitting",
+        "c": "To perform data preprocessing",
+        "d": "To reduce training time"
+      },
+      "explanations": {
+        "a": "Incorrect because plotting does not affect model performance.",
+        "b": "Correct because divergence between curves indicates overfitting or underfitting.",
+        "c": "Incorrect because preprocessing occurs before training.",
+        "d": "Incorrect because visualization does not speed up training."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    },
+    {
+      "question": "Which factor most strongly contributes to CNN's ability to generalize well in this experiment?",
+      "answers": {
+        "a": "Increasing the number of classes",
+        "b": "Using data augmentation and regularization techniques",
+        "c": "Removing pooling layers",
+        "d": "Avoiding normalization"
+      },
+      "explanations": {
+        "a": "Incorrect because generalization is not improved by more classes.",
+        "b": "Correct because these techniques reduce overfitting and improve robustness.",
+        "c": "Incorrect because pooling helps control overfitting.",
+        "d": "Incorrect because normalization improves training stability."
+      },
+      "correctAnswer": "b",
+      "difficulty": "intermediate"
+    }
+  ]
+}
