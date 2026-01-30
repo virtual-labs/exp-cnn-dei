@@ -2,37 +2,173 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "What type of data are Convolutional Neural Networks primarily designed to process?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "Sequential data",
+        "b": "Tabular data",
+        "c": "Image data",
+        "d": "Categorical data"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "Incorrect because sequential data, such as text or time series, are better handled by RNNs or Transformers.",
+        "b": "Incorrect because tabular data does not inherently contain spatial structure.",
+        "c": "Correct because CNNs are specifically designed to exploit spatial relationships present in images.",
+        "d": "Incorrect because categorical data requires encoding techniques rather than convolution operations."
       },
-      "correctAnswer": "a",
+      "correctAnswer": "c",
       "difficulty": "beginner"
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "Why are fully connected neural networks inefficient for image classification tasks?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "They cannot use activation functions",
+        "b": "They ignore spatial relationships between pixels",
+        "c": "They cannot be trained using gradient descent",
+        "d": "They require labeled data"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "Incorrect because fully connected networks can use activation functions.",
+        "b": "Correct because flattening images destroys spatial locality information.",
+        "c": "Incorrect because fully connected networks are trainable using gradient-based methods.",
+        "d": "Incorrect because labeled data is required by most supervised learning models."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "In an RGB image, how many channels are present?",
+      "answers": {
+        "a": "One",
+        "b": "Two",
+        "c": "Three",
+        "d": "Four"
+      },
+      "explanations": {
+        "a": "Incorrect because grayscale images have one channel, not RGB images.",
+        "b": "Incorrect because RGB consists of three color components.",
+        "c": "Correct because RGB images contain Red, Green, and Blue channels.",
+        "d": "Incorrect because an alpha channel is not part of standard RGB images."
       },
       "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What is the primary purpose of a convolution filter in a CNN?",
+      "answers": {
+        "a": "To reduce the number of training samples",
+        "b": "To detect local patterns in the input image",
+        "c": "To normalize pixel values",
+        "d": "To perform classification directly"
+      },
+      "explanations": {
+        "a": "Incorrect because filters operate on features, not on sample count.",
+        "b": "Correct because filters learn to identify features such as edges and textures.",
+        "c": "Incorrect because normalization is a preprocessing step.",
+        "d": "Incorrect because classification is performed by the final layers."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What is the output produced after applying a convolution operation called?",
+      "answers": {
+        "a": "Kernel",
+        "b": "Feature map",
+        "c": "Weight matrix",
+        "d": "Loss map"
+      },
+      "explanations": {
+        "a": "Incorrect because a kernel is the filter applied, not the output.",
+        "b": "Correct because the convolution operation produces feature maps.",
+        "c": "Incorrect because weights belong to the filter.",
+        "d": "Incorrect because loss is computed after prediction."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Why is the ReLU activation function commonly used in CNNs?",
+      "answers": {
+        "a": "It increases computational complexity",
+        "b": "It introduces non-linearity into the model",
+        "c": "It converts images into vectors",
+        "d": "It performs pooling"
+      },
+      "explanations": {
+        "a": "Incorrect because ReLU actually reduces computational cost.",
+        "b": "Correct because non-linearity allows learning complex patterns.",
+        "c": "Incorrect because flattening performs this operation.",
+        "d": "Incorrect because pooling is a separate operation."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What is the main purpose of pooling layers in CNNs?",
+      "answers": {
+        "a": "To increase the spatial dimensions of feature maps",
+        "b": "To reduce computational complexity",
+        "c": "To add non-linearity",
+        "d": "To classify images"
+      },
+      "explanations": {
+        "a": "Incorrect because pooling reduces spatial dimensions.",
+        "b": "Correct because pooling downsamples feature maps.",
+        "c": "Incorrect because activation functions provide non-linearity.",
+        "d": "Incorrect because classification is done by final layers."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Which pooling technique selects the maximum value from a region?",
+      "answers": {
+        "a": "Average Pooling",
+        "b": "Min Pooling",
+        "c": "Max Pooling",
+        "d": "Global Pooling"
+      },
+      "explanations": {
+        "a": "Incorrect because it computes the mean value.",
+        "b": "Incorrect because it selects the minimum value.",
+        "c": "Correct because it selects the highest activation in a region.",
+        "d": "Incorrect because it operates over the entire feature map."
+      },
+      "correctAnswer": "c",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "What advantage does parameter sharing provide in CNNs?",
+      "answers": {
+        "a": "Increases the number of parameters",
+        "b": "Reduces overfitting and memory usage",
+        "c": "Eliminates the need for training",
+        "d": "Removes the need for activation functions"
+      },
+      "explanations": {
+        "a": "Incorrect because parameter sharing reduces parameters.",
+        "b": "Correct because fewer parameters improve generalization.",
+        "c": "Incorrect because training is still required.",
+        "d": "Incorrect because activation functions are essential."
+      },
+      "correctAnswer": "b",
+      "difficulty": "beginner"
+    },
+    {
+      "question": "Which task is CNNs most commonly used for?",
+      "answers": {
+        "a": "Sorting numerical data",
+        "b": "Image classification",
+        "c": "Database management",
+        "d": "Text summarization"
+      },
+      "explanations": {
+        "a": "Incorrect because sorting is not a learning task.",
+        "b": "Correct because CNNs excel at visual recognition tasks.",
+        "c": "Incorrect because databases are not learning models.",
+        "d": "Incorrect because NLP tasks require different architectures."
+      },
+      "correctAnswer": "b",
       "difficulty": "beginner"
     }
   ]

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNN Educational Playground</title>
+    <link rel="stylesheet" href="notebook.css">
+
+    <!-- Highlight.js for code highlighting -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+
+    <!-- Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- MathJax for math rendering -->
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h1>CNN Lab</h1>
+        <p>Interactive sequential learning for Convolutional Neural Networks on CIFAR-10.</p>
+
+        <div id="toc-list" class="toc-list">
+            <!-- TOC items injected by JS -->
+        </div>
+
+        <div class="controls">
+            <button id="run-all-btn" class="btn primary">Run All Cells</button>
+            <button id="reset-btn" class="btn secondary">Reset</button>
+            <a href="../interactive/index.html" class="btn secondary"
+                style="text-decoration: none; text-align: center;">Go to Interactive Simulations</a>
+        </div>
+        <div class="status-panel">
+            <div id="progress-text">Ready</div>
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <main class="notebook-container" id="notebook-container">
+        <!-- Cells will be injected here by script.js -->
+        <div class="loading-spinner">Loading playground...</div>
+    </main>
+
+    <script src="notebook.js?v=2"></script>
+</body>
+
+</html>
