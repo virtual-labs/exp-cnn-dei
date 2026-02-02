@@ -13,8 +13,10 @@ A digital image can be represented as a 3D array with height, width, and channel
 There are neurons in convolution layers. Each neuron is connected only to a local region (receptive field) of the input, computes a weighted sum + bias, applies an activation function, and contributes to one element in a feature map.
 
 <img src="images/image8.png" alt="Figure 1: Neurons in Convolutional Layer" width="800">
+<p align="center"><b>Figure 1: Neurons in Convolutional Layer</b></p>
 
-**Key Concepts:**
+
+Referring to above figure1 it shows us that :
 
 - **Left:** The input image of size 5 × 5 is shown. The red box represents the receptive field, i.e., a local 3 × 3 region of the image.
 - **Middle:** A 3 × 3 filter (kernel) is applied to this local patch using element-wise multiplication and summation.
@@ -27,17 +29,21 @@ Convolution slides a small filter over the image and computes weighted sums to c
 
 <img src="images/image1.png" alt="Convolution Formula" width="400">
 
-Mathematically, the convolution operation is performed where **I** is the input image and **K** is the kernel.
+Mathematically, the convolution operation can be expressed as the above equation where I is the input image and K is the kernel.
 
-**Understanding Convolution:**
+Refer fig 2. To understand how convolution operation is actually performed by the kernel on an input image matrix and a feature map is calculated.
 
 - The convolution operation is performed by the kernel on an input image matrix to calculate a feature map.
 
 <img src="images/image7.png" alt="Figure 2: Convolution Operation Demo" width="900">
+<p align="center"><b>Figure 2: Convolution Operation Demo</b></p>
+
 
 - For RGB images with 3 channels, convolution operates across all channels simultaneously.
 
 <img src="images/image10.png" alt="Figure 3: RGB Convolution" width="900">
+<p align="center"><b>Figure 3: RGB Convolution</b></p>
+
 
 ### V. Feature Maps and Hierarchical Feature Learning
 
@@ -64,8 +70,12 @@ Where:
 - With kernel size 3×3 and stride 2, output size reduces significantly:
 
 <img src="images/image9.png" alt="Figure 4: Stride Operation Example" width="800">
+<p align="center"><b>Figure 4: Stride Operation Example</b></p>
+
 
 <img src="images/image12.png" alt="Figure 5: Stride Calculation" width="800">
+<p align="center"><b>Figure 5: Stride Calculation</b></p>
+
 
 - With padding=1, output size can be preserved: Output = `(N - F + 2) / S + 1`
 
@@ -82,6 +92,8 @@ After convolution, an activation function adds non-linearity. The most common is
 ReLU transforms the filter output by setting all negative values to zero while preserving positive values, introducing non-linearity essential for learning complex patterns.
 
 <img src="images/image14.png" alt="Figure 6: ReLU Effect on Feature Map" width="600">
+<p align="center"><b>Figure 6: ReLU Effect on Feature Map</b></p>
+
 
 ### VIII. Pooling Layers
 
@@ -92,18 +104,24 @@ Pooling downsamples feature maps to reduce computation and make features more ro
 Max pooling is a pooling operation that selects the maximum element from the region of the feature map covered by the filter. Thus, the output after max-pooling layer would be a feature map containing the most prominent features of the previous feature map.
 
 <img src="images/image13.png" alt="Figure 7: Max Pooling" width="800">
+<p align="center"><b>Figure 7: Max Pooling</b></p>
+
 
 #### Average Pooling
 
 Average pooling computes the average of the elements present in the region of the feature map covered by the filter. Thus, while max pooling gives the most prominent feature in a particular patch of the feature map, average pooling gives the average of features present in a patch.
 
 <img src="images/image16.png" alt="Figure 8: Average Pooling" width="800">
+<p align="center"><b>Figure 8: Average Pooling</b></p>
+
 
 ### IX. Flattening
 
 Before entering the fully connected layer, the feature maps from the previous convolutional and pooling layers are typically flattened into a one-dimensional vector. This is done to convert the spatial information into a format suitable for fully connected layers.
 
 <img src="images/image15.png" alt="Figure 9: Flattening Operation" width="900">
+<p align="center"><b>Figure 9: Flattening Operation</b></p>
+
 
 ### X. Overall CNN Architecture
 
@@ -116,6 +134,8 @@ Input Image → [Conv → Activation → Pooling]×N → Flatten → Fully Conne
 ```
 
 <img src="images/image6.png" alt="Figure 10: Overall CNN Architecture" width="1000">
+<p align="center"><b>Figure 10: Overall CNN Architecture</b></p>
+
 
 ### Merits of Convolutional Neural Networks
 

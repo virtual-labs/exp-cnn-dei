@@ -37,9 +37,6 @@
 
         <div class="step-sidebar-footer">
             <button class="run-all-btn" id="run-all-btn">
-                <!-- <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                </svg> -->
                 Run All Cells
             </button>
             <button class="reset-btn" id="reset-btn">
@@ -49,27 +46,47 @@
                 </svg>
                 Reset
             </button>
-            <a href="../interactive/index.html" class="reset-btn"
+            <a href="../index.html" class="reset-btn"
                 style="text-decoration: none; justify-content: center; margin-top: 4px;">
-                Interactive Sim
+                Back to Home
+            </a>
+
+            <a href="../cnn_experiment.pdf" class="download-btn" download
+                style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                </svg>
+                Download Experiment
             </a>
 
             <div class="status-panel" style="margin-top: 10px;">
                 <div id="progress-text" style="font-size: 0.8rem; margin-bottom: 4px; color: var(--text-muted);">Ready
                 </div>
-                <div class="progress-bar-container">
-                    <div id="progress-bar" class="progress-bar"></div>
+                <div class="progress-bar-container"
+                    style="height: 4px; background: #e9ecef; border-radius: 2px; overflow: hidden;">
+                    <div id="progress-bar" class="progress-bar"
+                        style="height: 100%; width: 0%; background: #198754; transition: width 0.3s ease;"></div>
                 </div>
             </div>
         </div>
     </aside>
 
-    <main class="notebook-container" id="notebook-container">
-        <!-- Cells will be injected here by script.js -->
-        <div class="loading-spinner">Loading playground...</div>
-    </main>
+    <div class="notebook-area">
+        <div class="notebook-header">
+            <h1>CNN Educational Lab</h1>
+            <div class="notebook-subtitle">Building and Training a Convolutional Neural Network on CIFAR-10</div>
+        </div>
 
-    <script src="notebook.js?v=2"></script>
+        <main class="notebook-container" id="notebook-container">
+            <!-- Cells will be injected here by notebook.js -->
+            <div class="loading-overlay">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading notebook content...</div>
+            </div>
+        </main>
+    </div>
+
+    <script src="notebook.js"></script>
 </body>
 
 </html>

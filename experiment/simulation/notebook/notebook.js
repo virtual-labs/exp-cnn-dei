@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isRunningAll = false;
     let tocItemsMap = new Map(); // Map Header Cell ID -> TOC Step Element
     let cellIdToHeaderMap = new Map(); // Map Code Cell ID -> Header Cell ID
+    let codeCellIndexCounter = 1;
 
     // Load Data
     fetch('notebook_data.json')
@@ -34,22 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
         cellData.forEach(cell => {
             // --- 1. Create Cell Element ---
             const cellEl = document.createElement('div');
-            cellEl.className = `cell ${cell.cell_type}`;
+            // Use 'notebook-cell' to match RNN styling
+            cellEl.className = `notebook-cell cell ${cell.cell_type}`;
             cellEl.id = `cell-${cell.id}`;
-
-            // Exec Count (Code Only)
-            if (cell.cell_type === 'code') {
-                const execCount = document.createElement('div');
-                execCount.className = 'exec-count';
-                execCount.id = `exec-count-${cell.id}`;
-                execCount.textContent = '[ ]';
-                cellEl.appendChild(execCount);
-
-                // Map code cell to current header
-                if (currentHeaderId !== null) {
-                    cellIdToHeaderMap.set(cell.id, currentHeaderId);
-                }
-            }
 
             // --- 2. Render Content ---
             let contentHtml = '';
@@ -59,40 +47,53 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cell.cell_type === 'markdown') {
                 contentHtml = marked.parse(cell.source);
 
-                // Extract Header for TOC - Robust Multiline Search
-                // Matches 1-3 hashes at start of string or after newline
+                // Extract Header for Sidebar navigation
                 const headerMatch = cell.source.match(/(?:^|[\r\n])\s*(#{1,3})\s+(.*)/);
                 if (headerMatch) {
-                    headerLevel = headerMatch[1].length; // 1, 2, or 3
+                    headerLevel = headerMatch[1].length;
                     headerText = headerMatch[2].trim();
-                    // Clean Text (remove links, bold, etc)
                     headerText = headerText.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[*_~`]/g, '');
-                    currentHeaderId = cell.id; // Update current section
+                    currentHeaderId = cell.id;
                 }
             } else {
-                // Code Cell - Dark Theme
+                // Code Cell
                 const highlighted = hljs.highlight(cell.source, { language: 'python' }).value;
+                // Determine label if we have a header context
+                const stepLabel = headerText ? `Step ${stepCounter}: ${headerText}` : `Step ${stepCounter}: Code Execution`;
+
                 contentHtml = `
-                    <div class="input-area">
-                        <pre><code class="language-python">${highlighted}</code></pre>
-                        <button class="run-cell-btn" id="btn-${cell.id}" onclick="runCell(${cell.id})" title="Run Cell">
-                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <div class="cell-header">
+                        <span class="cell-label">${stepLabel}</span>
+                        <button class="run-btn" id="btn-${cell.id}" onclick="runCell(${cell.id})">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                            Run
                         </button>
                     </div>
-                    <div class="output-area" id="output-${cell.id}"></div>
+                    <div class="cell-code">
+                        <pre><code class="language-python">${highlighted}</code></pre>
+                    </div>
+                    <div class="cell-output hidden" id="output-${cell.id}">
+                        <div class="output-label">Output:</div>
+                         <!-- Content injected here -->
+                    </div>
                 `;
             }
 
             if (cell.cell_type === 'markdown') {
                 cellEl.innerHTML = contentHtml;
             } else {
-                const wrapper = document.createElement('div');
-                wrapper.innerHTML = contentHtml;
-                while (wrapper.firstChild) {
-                    cellEl.appendChild(wrapper.firstChild);
-                }
+                // For code cells, contentHtml is the innerHTML
+                cellEl.innerHTML = contentHtml;
             }
             notebookContainer.appendChild(cellEl);
+
+            if (cell.cell_type === 'code') {
+                if (currentHeaderId !== null) {
+                    cellIdToHeaderMap.set(cell.id, currentHeaderId);
+                }
+            }
 
             // --- 3. Build TOC (Steps) ---
             if (headerText) {
@@ -263,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const cellEl = document.getElementById(`cell-${cellId}`);
         const outputEl = document.getElementById(`output-${cellId}`);
-        const execCountEl = document.getElementById(`exec-count-${cellId}`);
+        const btnEl = document.getElementById(`btn-${cellId}`);
 
         // TOC Running State
         const headerId = cellIdToHeaderMap.get(cellId);
@@ -273,10 +274,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // State: Running
         cellEl.classList.add('running');
-        execCountEl.textContent = '[*]';
+
+        if (btnEl) {
+            btnEl.innerHTML = `
+                <svg class="loading-spinner" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="border: none; margin: 0; animation: spin 1s linear infinite;">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 6v6l4 2"></path> 
+                </svg>
+                Running
+            `;
+            btnEl.classList.add('running');
+            btnEl.disabled = true;
+        }
 
         // Simulate Delay
-        const delay = Math.floor(Math.random() * 700) + 800;
+        // User request: stop 2 seconds per code when run all cells automatically
+        let delay;
+        if (isRunningAll) {
+            delay = 2000;
+        } else {
+            delay = Math.floor(Math.random() * 700) + 800;
+        }
         await new Promise(r => setTimeout(r, delay));
 
         // Render Outputs
@@ -305,26 +323,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
             outputEl.classList.add('visible');
+            outputEl.classList.remove('hidden');
+        } else {
+            outputEl.classList.add('hidden'); // Ensure hidden if no output
         }
 
         // State: Done
         cellEl.classList.remove('running');
         cellEl.classList.add('executed');
 
-        // Update Exec Count
-        const codeIdx = cellData.filter(c => c.cell_type === 'code').findIndex(c => c.id === cellId);
-        execCountEl.textContent = `[${codeIdx + 1}]`;
+        if (btnEl) {
+            btnEl.innerHTML = `
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+                Run
+            `;
+            btnEl.classList.remove('running');
+            btnEl.disabled = false;
+        }
 
         executedCellIds.add(cellId);
-
-        // Note: updateCellLocks will handle clearing 'running' status on TOC 
-        // and setting 'completed' if section is done.
     }
 
     runAllBtn.addEventListener('click', async () => {
         if (isRunningAll) return;
         isRunningAll = true;
 
+        // Remove status bar references or use them if they exist in HTML
+        // For now, assuming standard flow
         runAllBtn.disabled = true;
         resetBtn.disabled = true;
         runAllBtn.textContent = 'Running...';
@@ -337,10 +364,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const el = document.getElementById(`cell-${cell.id}`);
             el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            progressText.textContent = `Running ${i + 1}/${total}`;
+            if (progressText) progressText.textContent = `Running ${i + 1}/${total}`;
             if (progressBar) progressBar.style.width = `${((i) / total) * 100}%`;
 
+            // Wait 2 seconds per code (execution time controlled in executeCell, or forced buffer here)
+            // But user said "stop 2 seconds per code", which implies the running state lasts 2s.
+            // We will modify executeCell to handle the running duration.
             await executeCell(cell.id);
+
+            // Wait 3 seconds at output
+            await new Promise(r => setTimeout(r, 3000));
+
             updateCellLocks();
 
             if (progressBar) progressBar.style.width = `${((i + 1) / total) * 100}%`;
@@ -350,22 +384,33 @@ document.addEventListener('DOMContentLoaded', () => {
         runAllBtn.disabled = false;
         resetBtn.disabled = false;
         runAllBtn.textContent = 'Run All Cells';
-        progressText.textContent = 'Completed';
+        if (progressText) progressText.textContent = 'Completed';
     });
 
     resetBtn.addEventListener('click', () => {
         // Clear outputs
-        document.querySelectorAll('.output-area').forEach(el => {
+        document.querySelectorAll('.cell-output').forEach(el => {
             el.innerHTML = '';
+            el.classList.add('hidden');
             el.classList.remove('visible');
         });
 
-        // Reset counts and set
-        document.querySelectorAll('.exec-count').forEach(el => el.textContent = '[ ]');
+        // Reset buttons
+        document.querySelectorAll('.run-btn').forEach(btn => {
+            btn.innerHTML = `
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                </svg>
+                Run
+            `;
+            btn.classList.remove('running');
+            btn.disabled = false;
+        });
+
         executedCellIds.clear();
 
         // Reset classes
-        document.querySelectorAll('.cell').forEach(el => {
+        document.querySelectorAll('.notebook-cell').forEach(el => {
             el.classList.remove('executed');
             el.classList.remove('running');
         });
@@ -376,13 +421,10 @@ document.addEventListener('DOMContentLoaded', () => {
             el.classList.remove('running');
         });
 
-        // Reset progress
         if (progressBar) progressBar.style.width = '0%';
         if (progressText) progressText.textContent = 'Ready';
 
-        // Reset locks
         updateCellLocks();
-
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
