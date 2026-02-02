@@ -1,0 +1,146 @@
+[
+    {
+        "id": "default",
+        "config": {
+            "name": "default",
+            "epochs": 15,
+            "batch_size": 128,
+            "lr": 0.00182,
+            "optimizer": "adam",
+            "scheduler": "onecycle",
+            "num_blocks": 6,
+            "num_fc_layers": 1,
+            "dropout": "yes",
+            "augmentation": "yes",
+            "normalization": "yes",
+            "activation": "relu",
+            "filters_scale": 1.0
+        }
+    },
+    {
+        "id": "depth_1_block",
+        "config": {
+            "name": "depth_1_block",
+            "epochs": 15,
+            "batch_size": 128,
+            "lr": 0.00182,
+            "optimizer": "adam",
+            "scheduler": "onecycle",
+            "num_blocks": 1,
+            "num_fc_layers": 1,
+            "dropout": "yes",
+            "augmentation": "yes",
+            "normalization": "yes",
+            "activation": "relu",
+            "filters_scale": 1.0
+        }
+    },
+    {
+        "id": "fc_3_layers",
+        "config": {
+            "name": "fc_3_layers",
+            "epochs": 15,
+            "batch_size": 128,
+            "lr": 0.00182,
+            "optimizer": "adam",
+            "scheduler": "onecycle",
+            "num_blocks": 6,
+            "num_fc_layers": 3,
+            "dropout": "yes",
+            "augmentation": "yes",
+            "normalization": "yes",
+            "activation": "relu",
+            "filters_scale": 1.0
+        }
+    },
+    {
+        "id": "lr_high",
+        "config": {
+            "name": "lr_high",
+            "epochs": 15,
+            "batch_size": 128,
+            "lr": 0.1,
+            "optimizer": "adam",
+            "scheduler": "onecycle",
+            "num_blocks": 6,
+            "num_fc_layers": 1,
+            "dropout": "yes",
+            "augmentation": "yes",
+            "normalization": "yes",
+            "activation": "relu",
+            "filters_scale": 1.0
+        }
+    },
+    {
+        "id": "lr_low",
+        "config": {
+            "name": "lr_low",
+            "epochs": 15,
+            "batch_size": 128,
+            "lr": 0.0001,
+            "optimizer": "adam",
+            "scheduler": "onecycle",
+            "num_blocks": 6,
+            "num_fc_layers": 1,
+            "dropout": "yes",
+            "augmentation": "yes",
+            "normalization": "yes",
+            "activation": "relu",
+            "filters_scale": 1.0
+        }
+    },
+    {
+        "id": "opt_sgd",
+        "config": {
+            "name": "opt_sgd",
+            "epochs": 15,
+            "batch_size": 128,
+            "lr": 0.01,
+            "optimizer": "sgd",
+            "scheduler": "onecycle",
+            "num_blocks": 6,
+            "num_fc_layers": 1,
+            "dropout": "yes",
+            "augmentation": "yes",
+            "normalization": "yes",
+            "activation": "relu",
+            "filters_scale": 1.0
+        }
+    },
+    {
+        "id": "no_aug",
+        "config": {
+            "name": "no_aug",
+            "epochs": 15,
+            "batch_size": 128,
+            "lr": 0.00182,
+            "optimizer": "adam",
+            "scheduler": "onecycle",
+            "num_blocks": 6,
+            "num_fc_layers": 1,
+            "dropout": "yes",
+            "augmentation": "no",
+            "normalization": "yes",
+            "activation": "relu",
+            "filters_scale": 1.0
+        }
+    },
+    {
+        "id": "act_sigmoid",
+        "config": {
+            "name": "act_sigmoid",
+            "epochs": 15,
+            "batch_size": 128,
+            "lr": 0.00182,
+            "optimizer": "adam",
+            "scheduler": "onecycle",
+            "num_blocks": 6,
+            "num_fc_layers": 1,
+            "dropout": "yes",
+            "augmentation": "yes",
+            "normalization": "yes",
+            "activation": "sigmoid",
+            "filters_scale": 1.0
+        }
+    }
+]

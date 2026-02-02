@@ -34,14 +34,22 @@ document.addEventListener('DOMContentLoaded', () => {
         cellData.forEach(cell => {
             // --- 1. Create Cell Element ---
             const cellEl = document.createElement('div');
-            // Use 'notebook-cell' and 'cell' for backward/forward compatibility with CSS
-            cellEl.className = `notebook-cell cell ${cell.cell_type}`;
+            cellEl.className = `cell ${cell.cell_type}`;
             cellEl.id = `cell-${cell.id}`;
-            // Add data-step if it belongs to a step (managed later or here if we tracked current step index better)
-            // For now, we rely on implicit order or just styling
 
-            // Exec Count (Code Only) - NO LONGER USED in this new design, or we can keep it hidden
-            // The new design uses a "Run" button in the header.
+            // Exec Count (Code Only)
+            if (cell.cell_type === 'code') {
+                const execCount = document.createElement('div');
+                execCount.className = 'exec-count';
+                execCount.id = `exec-count-${cell.id}`;
+                execCount.textContent = '[ ]';
+                cellEl.appendChild(execCount);
+
+                // Map code cell to current header
+                if (currentHeaderId !== null) {
+                    cellIdToHeaderMap.set(cell.id, currentHeaderId);
+                }
+            }
 
             // --- 2. Render Content ---
             let contentHtml = '';
@@ -51,52 +59,40 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cell.cell_type === 'markdown') {
                 contentHtml = marked.parse(cell.source);
 
-                // Extract Header for Sidebar navigation
+                // Extract Header for TOC - Robust Multiline Search
+                // Matches 1-3 hashes at start of string or after newline
                 const headerMatch = cell.source.match(/(?:^|[\r\n])\s*(#{1,3})\s+(.*)/);
                 if (headerMatch) {
-                    headerLevel = headerMatch[1].length;
+                    headerLevel = headerMatch[1].length; // 1, 2, or 3
                     headerText = headerMatch[2].trim();
+                    // Clean Text (remove links, bold, etc)
                     headerText = headerText.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[*_~`]/g, '');
-                    currentHeaderId = cell.id;
+                    currentHeaderId = cell.id; // Update current section
                 }
             } else {
-                // Code Cell
+                // Code Cell - Dark Theme
                 const highlighted = hljs.highlight(cell.source, { language: 'python' }).value;
-                const cellHeaderIndex = codeCellIndexCounter++; // Local counter needed? 
-
                 contentHtml = `
-                    <div class="cell-header">
-                        <span class="cell-label">Step ${stepCounter - (headerText ? 0 : 1)}.${codeCellIndexCounter}: Code Execution</span>
-                        <button class="run-btn" id="btn-${cell.id}" onclick="runCell(${cell.id})">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z" />
-                            </svg>
-                            Run
+                    <div class="input-area">
+                        <pre><code class="language-python">${highlighted}</code></pre>
+                        <button class="run-cell-btn" id="btn-${cell.id}" onclick="runCell(${cell.id})" title="Run Cell">
+                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                         </button>
                     </div>
-                    <div class="cell-code">
-                        <pre><code class="language-python">${highlighted}</code></pre>
-                    </div>
-                    <div class="cell-output hidden" id="output-${cell.id}">
-                        <div class="output-label">Output:</div>
-                         <!-- Content injected here -->
-                    </div>
+                    <div class="output-area" id="output-${cell.id}"></div>
                 `;
             }
 
             if (cell.cell_type === 'markdown') {
                 cellEl.innerHTML = contentHtml;
             } else {
-                // For code cells, contentHtml is the innerHTML
-                cellEl.innerHTML = contentHtml;
-            }
-            notebookContainer.appendChild(cellEl);
-
-            if (cell.cell_type === 'code') {
-                if (currentHeaderId !== null) {
-                    cellIdToHeaderMap.set(cell.id, currentHeaderId);
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = contentHtml;
+                while (wrapper.firstChild) {
+                    cellEl.appendChild(wrapper.firstChild);
                 }
             }
+            notebookContainer.appendChild(cellEl);
 
             // --- 3. Build TOC (Steps) ---
             if (headerText) {
@@ -267,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const cellEl = document.getElementById(`cell-${cellId}`);
         const outputEl = document.getElementById(`output-${cellId}`);
-        const btnEl = document.getElementById(`btn-${cellId}`);
+        const execCountEl = document.getElementById(`exec-count-${cellId}`);
 
         // TOC Running State
         const headerId = cellIdToHeaderMap.get(cellId);
@@ -277,18 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // State: Running
         cellEl.classList.add('running');
-
-        if (btnEl) {
-            btnEl.innerHTML = `
-                <svg class="loading-spinner" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="border: none; margin: 0; animation: spin 1s linear infinite;">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 6v6l4 2"></path> 
-                </svg>
-                Running
-            `;
-            btnEl.classList.add('running');
-            btnEl.disabled = true;
-        }
+        execCountEl.textContent = '[*]';
 
         // Simulate Delay
         const delay = Math.floor(Math.random() * 700) + 800;
@@ -326,21 +311,9 @@ document.addEventListener('DOMContentLoaded', () => {
         cellEl.classList.remove('running');
         cellEl.classList.add('executed');
 
-        // Removed execCountEl update
-
-        if (btnEl) {
-            btnEl.innerHTML = `
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                </svg>
-                Run
-            `;
-            // Keep it ready to run again or change to 'Done'? User usually wants to re-run.
-            // Reference implies 'Run' is always available but maybe styled differently? 
-            // Let's stick to restoring it.
-            btnEl.classList.remove('running');
-            btnEl.disabled = false;
-        }
+        // Update Exec Count
+        const codeIdx = cellData.filter(c => c.cell_type === 'code').findIndex(c => c.id === cellId);
+        execCountEl.textContent = `[${codeIdx + 1}]`;
 
         executedCellIds.add(cellId);
 
@@ -388,27 +361,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Reset counts and set
-        // document.querySelectorAll('.exec-count').forEach(el => el.textContent = '[ ]'); // Removed
-
-        // Reset buttons
-        document.querySelectorAll('.run-btn').forEach(btn => {
-            btn.innerHTML = `
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                </svg>
-                Run
-            `;
-            btn.classList.remove('running');
-            btn.disabled = false;
-        });
-
+        document.querySelectorAll('.exec-count').forEach(el => el.textContent = '[ ]');
         executedCellIds.clear();
 
         // Reset classes
-        document.querySelectorAll('.notebook-cell').forEach(el => {
+        document.querySelectorAll('.cell').forEach(el => {
             el.classList.remove('executed');
             el.classList.remove('running');
-            el.classList.remove('completed');
         });
 
         // Reset Step markers
