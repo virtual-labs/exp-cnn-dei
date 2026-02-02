@@ -1,4 +1,4 @@
-## Theory
+### Theory
 
 ### I. Motivation for Convolutional Neural Networks
 
