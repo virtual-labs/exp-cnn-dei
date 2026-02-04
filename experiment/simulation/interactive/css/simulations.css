@@ -133,8 +133,11 @@ body {
    ============================================ */
 
 .main-content {
-    margin-top: 52px;
-    height: calc(100vh - 52px);
+    position: fixed;
+    top: 52px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     overflow: hidden;
 }
 
@@ -156,7 +159,7 @@ body {
 .app-container {
     display: grid;
     grid-template-columns: 240px 260px 1fr;
-    height: calc(100vh - 52px);
+    height: 100%;
     gap: 8px;
     padding: 8px;
     background: var(--bg-secondary);
@@ -171,7 +174,7 @@ body {
 .app-container-4pane {
     display: grid;
     grid-template-columns: 240px 1fr;
-    height: calc(100vh - 52px);
+    height: 100%;
     overflow: hidden;
     background: var(--bg-secondary);
     padding: 8px;
@@ -543,6 +546,9 @@ input:checked+.slider:before {
     padding: 0.75rem 1.5rem;
     background: var(--panel-bg);
     flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .stage-header h2,

@@ -328,6 +328,13 @@ document.addEventListener('DOMContentLoaded', () => {
             outputEl.classList.add('hidden'); // Ensure hidden if no output
         }
 
+        if (cell.outputs && cell.outputs.length > 0) {
+            // Wait 1 second before scrolling to output
+            setTimeout(() => {
+                outputEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 1000);
+        }
+
         // State: Done
         cellEl.classList.remove('running');
         cellEl.classList.add('executed');
