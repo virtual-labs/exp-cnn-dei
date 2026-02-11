@@ -94,7 +94,7 @@ body {
     top: 0;
     bottom: 0;
     z-index: 100;
-    overflow-y: auto;
+    overflow-y: hidden;
     box-shadow: var(--shadow-sm);
 }
 
@@ -102,6 +102,7 @@ body {
     padding: var(--spacing-lg);
     border-bottom: 1px solid var(--border-color);
     background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    flex-shrink: 0;
 }
 
 .step-sidebar-header h3 {
@@ -114,6 +115,7 @@ body {
 .step-list {
     flex: 1;
     padding: var(--spacing-md);
+    overflow-y: auto;
 }
 
 .step-item {
@@ -235,6 +237,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
+    flex-shrink: 0;
+    z-index: 10;
 }
 
 .run-all-btn,

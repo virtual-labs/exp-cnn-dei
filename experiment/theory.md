@@ -2,7 +2,7 @@
 
 ### I. Motivation for Convolutional Neural Networks
 
-Fully connected networks aren't ideal for images because flattening destroys spatial relationships between nearby pixels, and the dense connections create too many parameters, making them costly and prone to overfitting. CNNs solve this by using local connectivity and shared weights, which preserve spatial patterns and make learning more efficient and effective for visual data.
+Fully connected networks aren’t ideal for images because flattening destroys spatial relationships between nearby pixels, and the dense connections create too many parameters, making them costly and prone to overfitting. CNNs solve this by using local connectivity and shared weights, which preserve spatial patterns and make learning more efficient and effective for visual data.
 
 ### II. Digital Images as Inputs to CNNs
 
@@ -12,38 +12,25 @@ A digital image can be represented as a 3D array with height, width, and channel
 
 There are neurons in convolution layers. Each neuron is connected only to a local region (receptive field) of the input, computes a weighted sum + bias, applies an activation function, and contributes to one element in a feature map.
 
-<img src="images/image8.png" alt="Figure 1: Neurons in Convolutional Layer" width="800">
-<p align="center"><b>Figure 1: Neurons in Convolutional Layer</b></p>
+Y = f(&sum;<sub>i=1</sub><sup>m</sup> &sum;<sub>j=1</sub><sup>n</sup> w<sub>ij</sub> * x<sub>ij</sub> + b)
 
-
-Referring to above figure1 it shows us that :
-
-- **Left:** The input image of size 5 × 5 is shown. The red box represents the receptive field, i.e., a local 3 × 3 region of the image.
-- **Middle:** A 3 × 3 filter (kernel) is applied to this local patch using element-wise multiplication and summation.
-- **Right:** A single neuron output (one scalar value) is obtained, which forms one element of the feature map.
-- **Key idea:** Each neuron in a convolutional layer is connected only to a local region of the input, not the entire image. This is known as local connectivity.
+Where:
+- x<sub>ij</sub> = input pixel in receptive field
+- w<sub>ij</sub> = filter weight
+- b = bias
+- f(.) = activation function (ReLU , sigmoid ,etc.)
 
 ### IV. Convolution Operation
 
 Convolution slides a small filter over the image and computes weighted sums to capture local features, such as edges and textures. Reusing the same filter across the image reduces parameters while keeping strong feature learning.
 
-<img src="images/image1.png" alt="Convolution Formula" width="400">
+(I * K)(x, y) = &sum;<sub>i</sub> &sum;<sub>j</sub> I(x + i, y + j) K(i, j)
 
 Mathematically, the convolution operation can be expressed as the above equation where I is the input image and K is the kernel.
 
-Refer fig 2. To understand how convolution operation is actually performed by the kernel on an input image matrix and a feature map is calculated.
+Refer fig 1. To understand how convolution operation is actually performed by the kernel on an input image matrix and a feature map is calculated.
 
-- The convolution operation is performed by the kernel on an input image matrix to calculate a feature map.
-
-<img src="images/image7.png" alt="Figure 2: Convolution Operation Demo" width="900">
-<p align="center"><b>Figure 2: Convolution Operation Demo</b></p>
-
-
-- For RGB images with 3 channels, convolution operates across all channels simultaneously.
-
-<img src="images/image10.png" alt="Figure 3: RGB Convolution" width="900">
-<p align="center"><b>Figure 3: RGB Convolution</b></p>
-
+<img src="images/image18.png" width="520">
 
 ### V. Feature Maps and Hierarchical Feature Learning
 
@@ -51,93 +38,63 @@ After convolution, the output is a feature map. Each filter detects a specific f
 
 ### VI. Stride and Padding
 
-**Stride** is how many pixels the filter shifts each step; a larger stride reduces the output size. **Padding** adds (usually zero) pixels around the input to control output dimensions and keep edge information.
+Stride is how many pixels the filter shifts each step; a larger stride reduces the output size. Padding adds (usually zero) pixels around the input to control output dimensions and keep edge information. where N is the input size, F filter size, P padding, and S stride.
 
-**Output Size Formula:**
+Output = (N - F + 2P) / S + 1
 
-<img src="images/image2.png" alt="Output Size Formula" width="300">
+Refer  fig 2 to understand how stride operation is performed on input  matrix with a kernel size of 3*3 to get output as 2*2.
 
-Output = `(N - F + 2P) / S + 1`
+<img src="images/image13.png" width="320">
 
-Where:
-- **N** = input size
-- **F** = filter size
-- **P** = padding
-- **S** = stride
+Output = (5 - 3 + 2*0) / 2 + 1 = 2
 
-**Examples:**
+<img src="images/image11.png" width="350">
 
-- With kernel size 3×3 and stride 2, output size reduces significantly:
+Refer to Fig 3 to visualise how our output feature map will look like if padding    is 1 so,
 
-<img src="images/image9.png" alt="Figure 4: Stride Operation Example" width="800">
-<p align="center"><b>Figure 4: Stride Operation Example</b></p>
-
-
-<img src="images/image12.png" alt="Figure 5: Stride Calculation" width="800">
-<p align="center"><b>Figure 5: Stride Calculation</b></p>
-
-
-- With padding=1, output size can be preserved: Output = `(N - F + 2) / S + 1`
+Output = (5 - 3 + 2*1) / 2 + 1 = 3
 
 ### VII. Activation Functions in CNNs
 
-After convolution, an activation function adds non-linearity. The most common is **ReLU** (Rectified Linear Unit):
+After convolution, an activation function adds non-linearity. The most common is ReLU (Rectified Linear Unit):
 
-<img src="images/image5.png" alt="ReLU Formula" width="300">
+f(x) = max(0, x)
 
-`f(x) = max(0, x)`, which helps reduce vanishing gradients and speeds up training.
+which helps reduce vanishing gradients and speeds up training.
 
-<img src="images/image11.png" alt="ReLU Concept" width="500">
+Refer Figure 5 shown below to understand how the Relu function affects the filter output.
 
-ReLU transforms the filter output by setting all negative values to zero while preserving positive values, introducing non-linearity essential for learning complex patterns.
-
-<img src="images/image14.png" alt="Figure 6: ReLU Effect on Feature Map" width="600">
-<p align="center"><b>Figure 6: ReLU Effect on Feature Map</b></p>
-
+<img src="images/image10.png" width="350">
 
 ### VIII. Pooling Layers
 
 Pooling downsamples feature maps to reduce computation and make features more robust to small shifts. Common types are max pooling, average pooling, and global average pooling, and they can also help reduce overfitting.
 
-#### Max Pooling
+### i. Max Pooling
 
-Max pooling is a pooling operation that selects the maximum element from the region of the feature map covered by the filter. Thus, the output after max-pooling layer would be a feature map containing the most prominent features of the previous feature map.
+Max pooling is a pooling operation that selects the maximum element from the region of the feature map covered by the filter. Thus, the output after max-pooling layer would be a feature map containing the most prominent features of the previous feature map as shown in Fig 6.
 
-<img src="images/image13.png" alt="Figure 7: Max Pooling" width="800">
-<p align="center"><b>Figure 7: Max Pooling</b></p>
+<img src="images/image16.png" width="500">
 
+### ii. Average Pooling
 
-#### Average Pooling
+Average pooling computes the average of the elements present in the region of the feature   map covered by the filter.Thus, while max pooling gives the most prominent feature in a particular patch of the feature map, average pooling gives the average of features present in a patch as shown in Fig 7.
 
-Average pooling computes the average of the elements present in the region of the feature map covered by the filter. Thus, while max pooling gives the most prominent feature in a particular patch of the feature map, average pooling gives the average of features present in a patch.
-
-<img src="images/image16.png" alt="Figure 8: Average Pooling" width="800">
-<p align="center"><b>Figure 8: Average Pooling</b></p>
-
+<img src="images/image17.png" width="500">
 
 ### IX. Flattening
 
-Before entering the fully connected layer, the feature maps from the previous convolutional and pooling layers are typically flattened into a one-dimensional vector. This is done to convert the spatial information into a format suitable for fully connected layers.
+Before entering the fully connected layer, the featuremaps from the previous convolutional and pooling layers are typically flattened into a one-dimensional vector as shown in Fig 8.This is done to convert the spatial information into a format suitable for fully connected layers.
 
-<img src="images/image15.png" alt="Figure 9: Flattening Operation" width="900">
-<p align="center"><b>Figure 9: Flattening Operation</b></p>
-
+<img src="images/image12.png" width="520">
 
 ### X. Overall CNN Architecture
 
-A typical CNN stacks convolution, activation, and pooling layers to extract features, then uses fully connected layers or global pooling as a classifier. This pipeline enables strong image recognition performance with efficient use of parameters.
+A typical CNN stacks convolution, activation, and pooling layers to extract features, then uses fully connected layers or global pooling as a classifier as shown in Fig. 9. This pipeline enables strong image recognition performance with efficient use of parameters.
 
-**Typical Architecture Flow:**
+<img src="images/image14.png" width="680">
 
-```
-Input Image → [Conv → Activation → Pooling]×N → Flatten → Fully Connected → Output
-```
-
-<img src="images/image6.png" alt="Figure 10: Overall CNN Architecture" width="1000">
-<p align="center"><b>Figure 10: Overall CNN Architecture</b></p>
-
-
-### Merits of Convolutional Neural Networks
+### Merits of Convolutional Neural Networks:
 
 - Efficient parameter sharing (fewer weights than fully connected networks)
 - Preserves spatial structure in images
@@ -146,7 +103,7 @@ Input Image → [Conv → Activation → Pooling]×N → Flatten → Fully Conne
 - Scalable to large and complex visual tasks
 - Backbone of modern computer vision systems
 
-### Demerits of Convolutional Neural Networks
+### Demerits of Convolutional Neural Networks:
 
 - Require high computational resources (GPU/TPU)
 - Need large labeled datasets for best performance
