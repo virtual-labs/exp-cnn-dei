@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNN Simulation 2: Convolution & Pooling</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Courier+Prime:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/sim2.css">
+    <script src="js/images.js"></script>
+</head>
+
+<body>
+    <div class="app-container-4pane">
+        <!-- 1. LEFT PANE: Theory Only -->
+        <aside class="pane-theory glass-panel">
+            <header>
+                <h1>ConvNet Theory</h1>
+            </header>
+            <div id="theoryContent" class="theory-scroll">
+                <!-- Populated by JS -->
+            </div>
+            <footer>
+                <div style="margin-top:10px;">
+                    <a href="index.html" class="nav-btn-back"
+                        style="color:#94a3b8; margin-right:10px; text-decoration:none;">⬅ Data</a>
+                    <a href="simulation3.html"
+                        style="color:#60a5fa; text-decoration:none; font-weight:bold; border:1px solid #334155; padding:8px 16px; border-radius:6px; background:#0f172a; display:inline-block;">
+                        Next: Dense Layers ➡
+                    </a>
+                </div>
+            </footer>
+        </aside>
+
+        <!-- RIGHT AREA WRAPPER -->
+        <div class="right-area-col">
+
+            <!-- 2. TOP PANE: Sequential Simulation Chain -->
+            <section class="pane-stage">
+                <div class="sim-header">
+                    <span id="layerTitle">ConvNet Architecture</span>
+                    <div class="stage-controls">
+                        <button id="btnReset" class="btn-warning" title="Reset Simulation">↺ Reset</button>
+                        <button id="btnPlay" class="btn-play" title="Play/Pause">▶ Play</button>
+                        <button id="btnStep" class="btn-secondary" title="Step">Step</button>
+                        <button id="btnFinish" class="btn-danger" title="Finish Layer">Finish Layer</button>
+
+                        <div class="nav-group">
+                            <button id="btnPrevBlock" class="btn-nav" disabled>⬅ Prev</button>
+                            <button id="btnNextBlock" class="btn-nav">Next ➡</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visual-chain horizontal-flow" id="visualChain">
+                    <!-- 
+                       JS will generate:
+                       [Input Source] -> [Kernel 0] -> [Output 0 / Input 1] -> [Kernel 1] -> [Output 1] ...
+                    -->
+                </div>
+            </section>
+
+            <!-- 3. BOTTOM SPLIT (Controls | Math) -->
+            <section class="pane-bottom-split">
+
+                <!-- BOTTOM LEFT: Advanced Controls -->
+                <div class="pane-controls glass-panel">
+                    <h3>Layer Parameters <span id="ctrlBlockName" class="badge">Layer 0</span></h3>
+                    <div class="controls-grid">
+                        <div class="c-group">
+                            <label>Kernel Size</label>
+                            <input type="number" id="ctrlKernel" min="1" max="7" value="5" step="2">
+                        </div>
+                        <div class="c-group">
+                            <label>Filters</label>
+                            <input type="number" id="ctrlFilters" min="1" max="512" value="64">
+                        </div>
+                        <div class="c-group">
+                            <label>Stride</label>
+                            <input type="number" id="ctrlStride" min="1" max="5" value="1">
+                        </div>
+                        <div class="c-group">
+                            <label>Padding</label>
+                            <input type="number" id="ctrlPad" min="0" max="5" value="2">
+                        </div>
+                        <div class="c-group">
+                            <label>Pooling</label>
+                            <select id="ctrlPool">
+                                <option value="none">None</option>
+                                <option value="max">Max Pool (2x2)</option>
+                                <option value="avg">Avg Pool (2x2)</option>
+                            </select>
+                        </div>
+                        <div class="c-group">
+                            <label>Activation</label>
+                            <button id="btnToggleAct" class="btn-toggle active">ReLU</button>
+                        </div>
+                    </div>
+
+                    <div class="global-opts">
+                        <label>Input Image:</label>
+                        <select id="imageSelect"></select>
+                        <label>Speed:</label>
+                        <input type="range" id="speedRange" min="0" max="1000" step="10" value="500">
+                    </div>
+                </div>
+
+                <!-- BOTTOM RIGHT: Math Engine -->
+                <div class="pane-math glass-panel">
+                    <h3>Calculation Engine</h3>
+                    <div class="math-content">
+                        <div class="math-eq-general">
+                            Output(x,y) = &sum; (Input &times; Weight) + Bias
+                        </div>
+                        <div class="math-dynamic">
+                            <div id="mathDetail" class="math-detail-box">
+                                Hover/Drag input to see math...
+                            </div>
+                            <div class="math-final-res">
+                                Bias: <span id="mathBiasVal">0.1</span> <br>
+                                Result: <span id="mathResVal" class="highlight-val">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </div>
+    <script src="js/sim2.js"></script>
+</body>
+
+</html>

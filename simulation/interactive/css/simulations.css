@@ -1,0 +1,1784 @@
+/* ============================================
+   UNIFIED WHITE THEME - CNN Simulations
+   Educational Minimal UI
+   ============================================ */
+
+:root {
+    /* Core Colors - White Theme */
+    --bg-main: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+
+    /* Panel Colors */
+    --panel-bg: rgba(255, 255, 255, 0.95);
+    --panel-border: rgba(226, 232, 240, 1);
+    --panel-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+
+    /* Text Colors */
+    --text-main: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+
+    /* Accent Colors - Softer Educational Palette */
+    --accent-primary: #3b82f6;
+    --accent-primary-light: rgba(59, 130, 246, 0.1);
+    --accent-secondary: #8b5cf6;
+    --accent-success: #10b981;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+
+    /* Educational Highlights */
+    --highlight-red: #fecaca;
+    --highlight-green: #bbf7d0;
+    --highlight-blue: #bfdbfe;
+
+    /* Border Radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-secondary);
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
+    line-height: 1.5;
+    font-size: 15px;
+}
+
+/* ============================================
+   TAB NAVIGATION
+   ============================================ */
+
+.tab-navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 52px;
+    background: var(--panel-bg);
+    border-bottom: 1px solid var(--panel-border);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 140px;
+    gap: 2px;
+    z-index: 1000;
+    box-shadow: var(--panel-shadow);
+}
+
+.tab-navigation .logo {
+    position: absolute;
+    left: 12px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.tab-navigation .logo span {
+    color: var(--accent-primary);
+}
+
+.tab-btn {
+    padding: 6px 12px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+    position: relative;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.tab-btn:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-main);
+}
+
+.tab-btn.active {
+    background: var(--accent-primary-light);
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+    height: 3px;
+    background: var(--accent-primary);
+    border-radius: 2px;
+}
+
+/* ============================================
+   MAIN CONTENT AREA
+   ============================================ */
+
+.main-content {
+    position: fixed;
+    top: 52px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.tab-content {
+    display: none;
+    height: 100%;
+    overflow: hidden;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ============================================
+   APP CONTAINER LAYOUTS
+   ============================================ */
+
+/* Simulation 1: 3-column layout */
+.app-container {
+    display: grid;
+    grid-template-columns: 240px 260px 1fr;
+    height: 100%;
+    gap: 8px;
+    padding: 8px;
+    background: var(--bg-secondary);
+}
+
+/* Workspace: Make children direct grid items */
+.workspace {
+    display: contents;
+}
+
+/* Simulation 2 & 3: 2-column layout */
+.app-container-4pane {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-secondary);
+    padding: 8px;
+    gap: 8px;
+}
+
+/* ============================================
+   GLASS PANELS - White Theme
+   ============================================ */
+
+.glass-panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--panel-shadow);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================
+   SIDEBAR - Theory Panel
+   ============================================ */
+
+.sidebar,
+.pane-theory {
+    gap: 1rem;
+    background: var(--panel-bg);
+    border-right: 1px solid var(--panel-border);
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.sidebar header h1,
+.pane-theory header h1 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.sidebar header h2 {
+    font-size: 0.9rem;
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.theory-content,
+.theory-scroll {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-right: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--panel-border) transparent;
+}
+
+.theory-content h3 {
+    font-size: 1rem;
+    color: var(--text-main);
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+.theory-content p,
+.theory-scroll p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.theory-content strong {
+    color: var(--text-main);
+}
+
+.theory-section {
+    margin-bottom: 1.5rem;
+}
+
+.theory-section h3 {
+    color: var(--accent-primary);
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.theory-step {
+    background: var(--bg-tertiary);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 0.75rem;
+    border-left: 3px solid var(--accent-primary);
+}
+
+.theory-step h3 {
+    font-size: 0.9rem;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+}
+
+.highlight-text {
+    background: var(--accent-primary-light);
+    padding: 12px;
+    border-left: 3px solid var(--accent-primary);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+/* ============================================
+   CONTROL SIDEBAR
+   ============================================ */
+
+.control-sidebar {
+    gap: 1rem;
+    overflow-y: auto;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.control-sidebar h3,
+.pane-controls h3,
+.glass-panel h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--panel-border);
+    padding-bottom: 0.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* Selects & Inputs */
+.class-selector {
+    flex-shrink: 0;
+    margin-bottom: 8px;
+}
+
+.class-selector select,
+select,
+.c-group select {
+    width: 100%;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--panel-border);
+    color: var(--text-main);
+    padding: 0.625rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+select:focus,
+.c-group select:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+input[type="text"],
+input[type="number"],
+.c-group input {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--panel-border);
+    color: var(--text-main);
+    padding: 0.625rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+.c-group input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+/* ============================================
+   IMAGE GRID
+   ============================================ */
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    max-height: 180px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 6px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    margin-top: 6px;
+    flex-shrink: 0;
+}
+
+.image-grid img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.image-grid img:hover {
+    border-color: var(--panel-border);
+    transform: scale(1.05);
+}
+
+.image-grid img.active {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--accent-primary-light);
+}
+
+/* ============================================
+   CONTROL GROUPS
+   ============================================ */
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.control-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+/* Toggle Switch - White Theme */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--panel-border);
+    transition: 0.3s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+input:checked+.slider {
+    background-color: var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+
+input:checked+.slider:before {
+    transform: translateX(20px);
+}
+
+/* ============================================
+   AUGMENTATION BUTTONS
+   ============================================ */
+
+.aug-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+}
+
+.aug-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--panel-border);
+    color: var(--text-secondary);
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.aug-btn:hover {
+    background: var(--bg-main);
+    border-color: var(--text-muted);
+    color: var(--text-main);
+}
+
+.aug-btn.active {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    background: var(--accent-primary-light);
+}
+
+.reset-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.625rem;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: var(--accent-danger);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.reset-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+}
+
+/* ============================================
+   STAGE PANEL
+   ============================================ */
+
+.stage-panel,
+.pane-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    position: relative;
+    background: var(--bg-main);
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.stage-header,
+.sim-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--panel-border);
+    padding: 0.75rem 1.5rem;
+    background: var(--panel-bg);
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.stage-header h2,
+.sim-header span#layerTitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.pixel-info-bar {
+    display: flex;
+    gap: 2rem;
+}
+
+.info-box {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: var(--accent-primary);
+    min-width: 180px;
+    /* Increased width to prevent overlap */
+    white-space: nowrap;
+    /* Prevent wrapping */
+    text-align: right;
+    background: var(--bg-tertiary);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+}
+
+/* ============================================
+   CANVAS STAGE
+   ============================================ */
+
+.canvas-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    flex: 1;
+    width: 100%;
+    padding: 2rem;
+    min-height: 0;
+}
+
+.stage-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.stage-item .label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.canvas-container {
+    position: relative;
+    background: var(--bg-tertiary);
+    border: 2px solid var(--panel-border);
+    border-radius: var(--radius-md);
+    image-rendering: pixelated;
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.canvas-container canvas {
+    display: block;
+    width: 320px;
+    height: 320px;
+    cursor: crosshair;
+}
+
+.hover-guide {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--accent-primary);
+    box-shadow: 0 0 0 1px white;
+    pointer-events: none;
+    display: none;
+}
+
+.stage-arrow {
+    font-size: 2rem;
+    color: var(--text-muted);
+    opacity: 0.4;
+}
+
+/* ============================================
+   ANALYTICS ROW
+   ============================================ */
+
+.analytics-row {
+    width: 100%;
+    min-height: 120px;
+    max-height: 160px;
+    display: flex;
+    align-items: stretch;
+    gap: 0.75rem;
+    border-top: 1px solid var(--panel-border);
+    padding-top: 0.75rem;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.stats-box {
+    width: 160px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.stats-box h4 {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.stats-box table {
+    width: 100%;
+    font-size: 0.7rem;
+    font-family: monospace;
+    border-collapse: collapse;
+}
+
+.stats-box td,
+.stats-box th {
+    padding: 2px 4px;
+    text-align: right;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stats-box td:first-child,
+.stats-box th:first-child {
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.stats-box thead {
+    border-bottom: 1px solid var(--panel-border);
+}
+
+.chart-box {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    padding: 0.5rem;
+}
+
+/* ============================================
+   SIMULATION 2 SPECIFIC STYLES
+   ============================================ */
+
+.right-area-col {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    overflow: hidden;
+    height: 100%;
+    padding: 0.5rem;
+    padding-left: 0;
+    gap: 0.5rem;
+}
+
+.pane-stage {
+    background: var(--bg-main);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--panel-border);
+    min-height: 0;
+}
+
+.visual-chain {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    padding: 16px 24px;
+    gap: 20px;
+    scroll-behavior: smooth;
+    width: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: var(--panel-border) var(--bg-tertiary);
+}
+
+.block-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
+    scroll-margin-left: 40px;
+}
+
+/* Control Buttons */
+.stage-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.stage-controls button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.stage-controls button:hover {
+    transform: translateY(-1px);
+}
+
+.stage-controls button:active {
+    transform: translateY(0);
+}
+
+.btn-play {
+    background: var(--accent-success);
+    color: white;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-main);
+    border: 1px solid var(--panel-border);
+}
+
+.btn-danger {
+    background: var(--accent-danger);
+    color: white;
+}
+
+.btn-warning {
+    background: var(--accent-warning);
+    color: white;
+}
+
+.btn-nav {
+    background: var(--accent-primary);
+    color: white;
+    padding: 10px 20px !important;
+}
+
+.btn-nav:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+}
+
+.nav-group {
+    display: flex;
+    gap: 8px;
+}
+
+/* Tensor Views */
+.tensor-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+
+.tensor-label {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--panel-border);
+}
+
+.canvas-wrapper {
+    position: relative;
+    border: 2px solid var(--panel-border);
+    background: var(--bg-tertiary);
+    box-shadow: var(--panel-shadow);
+    transition: border-color 0.3s;
+    border-radius: var(--radius-sm);
+}
+
+.canvas-wrapper.interactable {
+    cursor: crosshair;
+}
+
+.block-container:focus-within .canvas-wrapper {
+    border-color: var(--accent-primary);
+}
+
+/* Kernel Display */
+.kernel-display {
+    padding: 15px;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: var(--panel-shadow);
+}
+
+.kernel-display label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kernel-preview {
+    display: grid;
+    gap: 2px;
+    background: var(--bg-tertiary);
+    padding: 3px;
+    border-radius: var(--radius-sm);
+}
+
+.k-cell {
+    width: 24px;
+    height: 24px;
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: 1px solid var(--panel-border);
+}
+
+.connector-arrow {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    margin: 0 8px;
+    opacity: 0.5;
+    display: flex;
+    align-items: center;
+    align-self: center;
+}
+
+/* Highlight Overlays */
+.highlight-box {
+    position: absolute;
+    border: 2px solid var(--accent-primary);
+    background: rgba(59, 130, 246, 0.1);
+    display: none;
+    pointer-events: none;
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+    z-index: 20;
+}
+
+.highlight-pixel {
+    position: absolute;
+    border: 2px solid var(--accent-danger);
+    background: rgba(239, 68, 68, 0.2);
+    display: none;
+    pointer-events: none;
+    z-index: 20;
+}
+
+/* ============================================
+   BOTTOM SPLIT PANE (Collapsible)
+   ============================================ */
+
+.bottom-panel-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    transition: max-height 0.3s ease;
+}
+
+/* Default collapsed state for sim2 and sim3 */
+#sim2 .bottom-panel-wrapper,
+#sim3 .bottom-panel-wrapper {
+    max-height: 28px;
+}
+
+#sim2 .bottom-panel-wrapper.collapsed,
+#sim3 .bottom-panel-wrapper.collapsed {
+    max-height: 28px;
+}
+
+#sim2 .bottom-panel-wrapper:not(.collapsed),
+#sim3 .bottom-panel-wrapper:not(.collapsed) {
+    max-height: 300px;
+}
+
+.bottom-panel-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    height: 28px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: background 0.2s, color 0.2s;
+}
+
+.bottom-panel-toggle:hover {
+    background: var(--panel-border);
+    color: var(--text-main);
+}
+
+.bottom-panel-toggle .chevron {
+    transition: transform 0.3s;
+    font-size: 0.7rem;
+}
+
+.bottom-panel-wrapper.collapsed .bottom-panel-toggle .chevron {
+    transform: rotate(180deg);
+}
+
+.bottom-panel-wrapper.collapsed .pane-bottom-split {
+    display: none;
+}
+
+.pane-bottom-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--bg-secondary);
+    gap: 1rem;
+    flex: 1;
+    min-height: 0;
+}
+
+.pane-controls,
+.pane-math {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    overflow-y: auto;
+}
+
+.controls-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+.c-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.c-group label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.btn-toggle {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--panel-border);
+    padding: 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-toggle.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: white;
+}
+
+.global-opts {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--panel-border);
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+
+.global-opts label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.global-opts input[type="range"] {
+    width: 120px;
+    accent-color: var(--accent-primary);
+}
+
+/* Math Panel */
+.math-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+    flex: 1;
+}
+
+.math-eq-general {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--text-main);
+    text-align: center;
+    padding: 16px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px dashed var(--panel-border);
+    flex-shrink: 0;
+}
+
+.math-dynamic {
+    display: flex;
+    flex: 1;
+    gap: 16px;
+    min-height: 0;
+}
+
+.math-detail-box {
+    flex: 3;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: var(--accent-primary);
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.4;
+    height: 100%;
+}
+
+.math-final-res {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-md);
+    font-size: 1.1rem;
+    gap: 8px;
+    height: 100%;
+    color: var(--text-main);
+}
+
+.highlight-val {
+    color: var(--accent-primary);
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+/* ============================================
+   SIMULATION 3 SPECIFIC STYLES
+   ============================================ */
+
+.fc-visual-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 4rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+    min-width: 0;
+}
+
+.layer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    z-index: 2;
+    border-radius: var(--radius-md);
+}
+
+.layer-label {
+    position: absolute;
+    top: -50px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-align: center;
+    width: 150px;
+    font-weight: 500;
+}
+
+#col-input {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 3px;
+    padding: 8px;
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-md);
+    background: var(--bg-tertiary);
+}
+
+.node {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    border: 2px solid var(--panel-border);
+    transition: all 0.3s ease;
+    position: relative;
+    flex-shrink: 0;
+}
+
+#col-input .node {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    border: none;
+}
+
+.node.active {
+    background: var(--accent-primary);
+    box-shadow: 0 0 8px var(--accent-primary);
+    border-color: var(--accent-primary);
+    z-index: 5;
+}
+
+.node.dropout {
+    opacity: 0.3;
+    background: var(--accent-danger);
+    transform: scale(0.8);
+    box-shadow: none;
+}
+
+.connections-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: visible;
+}
+
+line.connection {
+    stroke: #94a3b8;
+    stroke-width: 1;
+    opacity: 0.25;
+    transition: stroke 0.3s, stroke-width 0.3s, opacity 0.3s;
+}
+
+line.connection.active-pos {
+    stroke: var(--accent-primary);
+    stroke-width: 2.5;
+    opacity: 0.8;
+}
+
+line.connection.active-neg {
+    stroke: var(--accent-secondary);
+    stroke-width: 2.5;
+    opacity: 0.8;
+}
+
+.param-badge {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-family: monospace;
+    border: 1px solid var(--panel-border);
+}
+
+.slider-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.8rem;
+}
+
+.slider-row span {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary);
+}
+
+.slider-row input {
+    width: 100%;
+    accent-color: var(--accent-primary);
+}
+
+.btn-group-row {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-group-row button {
+    flex: 1;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--panel-border);
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.8rem;
+}
+
+.btn-group-row button:hover {
+    border-color: var(--text-muted);
+    color: var(--text-main);
+}
+
+.btn-group-row button.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: white;
+}
+
+.btn-act {
+    flex: 1;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--panel-border);
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.75rem;
+}
+
+.btn-act.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: white;
+}
+
+.btn-primary {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+}
+
+.box-border {
+    border: 1px solid var(--panel-border);
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    background: var(--bg-tertiary);
+}
+
+.mt-1 {
+    margin-top: 0.5rem;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 99px;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 1px solid var(--panel-border);
+}
+
+.badge-blue {
+    background: var(--accent-primary-light);
+    color: var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+
+.badge-purple {
+    background: rgba(139, 92, 246, 0.1);
+    color: var(--accent-secondary);
+}
+
+/* Math Variables */
+.math-var {
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+
+.math-func {
+    color: var(--accent-secondary);
+}
+
+.text-muted {
+    color: var(--text-muted);
+}
+
+/* ============================================
+   CONTROL INPUTS (From style_refine.css)
+   ============================================ */
+
+.control-inputs {
+    display: flex;
+    gap: 0.5rem;
+    transition: opacity 0.3s;
+    margin-top: 0.5rem;
+}
+
+.disable-overlay {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.disable-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.input-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.input-pair label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.input-pair input {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--panel-border);
+    color: var(--text-main);
+    padding: 0.4rem;
+    border-radius: var(--radius-sm);
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    width: 100%;
+}
+
+.canvas-container.locked {
+    border-color: var(--accent-secondary);
+    box-shadow: 0 0 12px rgba(139, 92, 246, 0.2);
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--panel-border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* ============================================
+   FOOTER NAVIGATION
+   ============================================ */
+
+.sidebar footer,
+.pane-theory footer {
+    padding-top: 1rem;
+    border-top: 1px solid var(--panel-border);
+    margin-top: auto;
+}
+
+.nav-btn-back {
+    color: var(--text-muted) !important;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.nav-btn-back:hover {
+    color: var(--text-main) !important;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 1400px) {
+    .app-container {
+        grid-template-columns: 240px 280px 1fr;
+    }
+
+    .canvas-container canvas {
+        width: 240px;
+        height: 240px;
+    }
+
+    .hover-guide {
+        width: 7.5px;
+        height: 7.5px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .app-container {
+        grid-template-columns: 220px 260px 1fr;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .app-container-4pane {
+        grid-template-columns: 260px 1fr;
+    }
+
+    .controls-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .canvas-container canvas {
+        width: 200px;
+        height: 200px;
+    }
+
+    .hover-guide {
+        width: 6.25px;
+        height: 6.25px;
+    }
+
+    .analytics-row {
+        grid-template-columns: 160px 1fr;
+        min-height: 100px;
+        max-height: 140px;
+    }
+
+    .stage-arrow {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .tab-navigation .logo {
+        display: none;
+    }
+
+    .tab-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+
+    .app-container {
+        grid-template-columns: 200px 240px 1fr;
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .app-container-4pane {
+        grid-template-columns: 240px 1fr;
+    }
+
+    .right-area-col {
+        grid-template-rows: 1.2fr 1fr;
+    }
+
+    .canvas-container canvas {
+        width: 180px;
+        height: 180px;
+    }
+
+    .hover-guide {
+        width: 5.625px;
+        height: 5.625px;
+    }
+
+    .sidebar header h1,
+    .pane-theory header h1 {
+        font-size: 1.2rem;
+    }
+
+    .glass-panel {
+        padding: 1rem;
+    }
+
+    .controls-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .pane-bottom-split {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+    }
+
+    .analytics-row {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        max-height: none;
+        gap: 0.5rem;
+    }
+
+    .stats-box {
+        display: none;
+    }
+}
+
+@media (max-width: 900px) {
+    .app-container {
+        grid-template-columns: 180px 1fr;
+    }
+
+    .control-sidebar {
+        display: none;
+    }
+
+    .canvas-container canvas {
+        width: 160px;
+        height: 160px;
+    }
+
+    .hover-guide {
+        width: 5px;
+        height: 5px;
+    }
+
+    .app-container-4pane {
+        grid-template-columns: 200px 1fr;
+    }
+
+    .fc-visual-container {
+        gap: 3rem;
+        padding: 1.5rem;
+    }
+}
+
+@media (max-height: 800px) {
+    .right-area-col {
+        grid-template-rows: 1fr 1fr;
+    }
+
+    .canvas-container canvas {
+        width: 180px;
+        height: 180px;
+    }
+
+    .hover-guide {
+        width: 5.625px;
+        height: 5.625px;
+    }
+
+    .analytics-row {
+        min-height: 80px;
+        max-height: 120px;
+    }
+
+    .theory-content,
+    .theory-scroll {
+        gap: 0.75rem;
+    }
+
+    .theory-content p,
+    .theory-scroll p {
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+}
+
+@media (max-height: 700px) {
+    .canvas-container canvas {
+        width: 150px;
+        height: 150px;
+    }
+
+    .hover-guide {
+        width: 4.69px;
+        height: 4.69px;
+    }
+
+    .analytics-row {
+        display: none;
+    }
+
+    .image-grid {
+        max-height: 120px;
+    }
+}
+
+/* ============================================
+   COLLAPSIBLE CONTROLS DRAWER (Small Screens)
+   ============================================ */
+
+.controls-drawer {
+    display: none;
+}
+
+.drawer-toggle {
+    display: none;
+}
+
+@media (max-height: 650px) {
+
+    /* Hide original control sidebars */
+    .control-sidebar,
+    .pane-controls,
+    .pane-math {
+        display: none !important;
+    }
+
+    /* Adjust layouts without control columns */
+    .app-container {
+        grid-template-columns: 200px 1fr !important;
+    }
+
+    .pane-bottom-split {
+        display: none !important;
+    }
+
+    /* Show the drawer */
+    .controls-drawer {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--panel-bg);
+        border-top: 1px solid var(--panel-border);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+        z-index: 500;
+        transform: translateY(calc(100% - 44px));
+        transition: transform 0.3s ease;
+        max-height: 60vh;
+        overflow: hidden;
+    }
+
+    .controls-drawer.open {
+        transform: translateY(0);
+    }
+
+    .drawer-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        height: 44px;
+        background: var(--bg-tertiary);
+        border: none;
+        border-bottom: 1px solid var(--panel-border);
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--text-main);
+    }
+
+    .drawer-toggle:hover {
+        background: var(--panel-border);
+    }
+
+    .drawer-toggle .chevron {
+        transition: transform 0.3s;
+    }
+
+    .controls-drawer.open .drawer-toggle .chevron {
+        transform: rotate(180deg);
+    }
+
+    .drawer-content {
+        padding: 1rem;
+        overflow-y: auto;
+        max-height: calc(60vh - 44px);
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .drawer-content .control-group {
+        background: var(--bg-main);
+        padding: 0.75rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--panel-border);
+    }
+
+    .drawer-content h3 {
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Adjust main content to not be hidden by drawer handle */
+    .main-content {
+        padding-bottom: 44px;
+    }
+
+    /* Make theory panels more compact */
+    .sidebar,
+    .pane-theory {
+        min-width: 160px;
+    }
+}
