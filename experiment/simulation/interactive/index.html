@@ -72,9 +72,10 @@
                             <h3>Why Preprocess?</h3>
                             <p>
                                 Raw pixel values [0, 255] are often too large and uncentered for neural networks.
-                                <strong>Normalization</strong> shifts data to be centered around 0 with a smaller range
-                                (like -1 to 1),
-                                speeding up gradient descent.
+                                <strong>Normalization</strong> subtracts the per-channel mean and divides by the
+                                per-channel standard deviation (CIFAR-10 stats: mean ≈ 0.49, std ≈ 0.25 per channel),
+                                producing values roughly in the range <strong>−2.1 to +2.5</strong>.
+                                This zero-centres the data and speeds up gradient descent.
                             </p>
                         </section>
 

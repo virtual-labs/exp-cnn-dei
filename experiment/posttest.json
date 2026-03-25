@@ -2,7 +2,7 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "Why is data augmentation used while training a CNN on the CIFAR-10 dataset?",
+      "question": "1. Why is data augmentation used while training a CNN on the CIFAR-10 dataset?",
       "answers": {
         "a": "To increase the number of test samples",
         "b": "To create diverse variations of training images",
@@ -19,7 +19,7 @@
       "difficulty": "intermediate"
     },
     {
-      "question": "What is the main advantage of using convolutional layers instead of fully connected layers for images?",
+      "question": "2. What is the main advantage of using convolutional layers instead of fully connected layers for images?",
       "answers": {
         "a": "They require more parameters",
         "b": "They preserve spatial relationships between pixels",
@@ -36,7 +36,7 @@
       "difficulty": "intermediate"
     },
     {
-      "question": "Why is normalization applied to CIFAR-10 images before training the CNN?",
+      "question": "3. Why is normalization applied to CIFAR-10 images before training the CNN?",
       "answers": {
         "a": "To convert images into grayscale",
         "b": "To scale pixel values for stable and faster training",
@@ -53,7 +53,7 @@
       "difficulty": "intermediate"
     },
     {
-      "question": "What is the purpose of pooling layers in a CNN architecture?",
+      "question": "4. What is the purpose of pooling layers in a CNN architecture?",
       "answers": {
         "a": "To increase spatial resolution",
         "b": "To reduce computational complexity and overfitting",
@@ -70,7 +70,7 @@
       "difficulty": "intermediate"
     },
     {
-      "question": "Why is ReLU commonly used as an activation function in CNNs?",
+      "question": "5. Why is ReLU commonly used as an activation function in CNNs?",
       "answers": {
         "a": "It converts outputs into probabilities",
         "b": "It helps mitigate the vanishing gradient problem",
@@ -87,7 +87,7 @@
       "difficulty": "intermediate"
     },
     {
-      "question": "What role does Global Average Pooling play in the CNN model used in this experiment?",
+      "question": "6. What role does Global Average Pooling play in the CNN model used in this experiment?",
       "answers": {
         "a": "It increases the number of trainable parameters",
         "b": "It aggregates spatial information before classification",
@@ -104,7 +104,7 @@
       "difficulty": "intermediate"
     },
     {
-      "question": "Why is the CIFAR-10 dataset considered challenging for CNN models?",
+      "question": "7. Why is the CIFAR-10 dataset considered challenging for CNN models?",
       "answers": {
         "a": "Because images are very large",
         "b": "Because images have no labels",
@@ -121,7 +121,7 @@
       "difficulty": "intermediate"
     },
     {
-      "question": "What information does a confusion matrix provide in CNN evaluation?",
+      "question": "8. What information does a confusion matrix provide in CNN evaluation?",
       "answers": {
         "a": "Training speed of the model",
         "b": "Correct and incorrect class-wise predictions",
@@ -138,7 +138,7 @@
       "difficulty": "intermediate"
     },
     {
-      "question": "Why are training and testing accuracy curves plotted after CNN training?",
+      "question": "9. Why are training and testing accuracy curves plotted after CNN training?",
       "answers": {
         "a": "To increase model accuracy",
         "b": "To visualize learning behavior and detect overfitting",
@@ -155,7 +155,7 @@
       "difficulty": "intermediate"
     },
     {
-      "question": "Which factor most strongly contributes to CNN's ability to generalize well in this experiment?",
+      "question": "10. Which factor most strongly contributes to CNN's ability to generalize well in this experiment?",
       "answers": {
         "a": "Increasing the number of classes",
         "b": "Using data augmentation and regularization techniques",

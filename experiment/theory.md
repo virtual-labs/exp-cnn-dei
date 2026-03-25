@@ -12,21 +12,22 @@ A digital image can be represented as a 3D array with height, width, and channel
 
 There are neurons in convolution layers. Each neuron is connected only to a local region (receptive field) of the input, computes a weighted sum + bias, applies an activation function, and contributes to one element in a feature map.
 
-Y = f(&sum;<sub>i=1</sub><sup>m</sup> &sum;<sub>j=1</sub><sup>n</sup> w<sub>ij</sub> * x<sub>ij</sub> + b)
+$$Y = f\!\left(\sum_{i=1}^{m} \sum_{j=1}^{n} w_{ij} \cdot x_{ij} + b\right)$$
 
 Where:
-- x<sub>ij</sub> = input pixel in receptive field
-- w<sub>ij</sub> = filter weight
-- b = bias
-- f(.) = activation function (ReLU , sigmoid ,etc.)
+- $x_{ij}$ = input pixel at position $(i, j)$ in the receptive field
+- $w_{ij}$ = filter weight at position $(i, j)$
+- $b$ = bias term
+- $f(\cdot)$ = activation function (ReLU, sigmoid, etc.)
+- $m, n$ = height and width of the filter (receptive field dimensions)
 
 ### IV. Convolution Operation
 
 Convolution slides a small filter over the image and computes weighted sums to capture local features, such as edges and textures. Reusing the same filter across the image reduces parameters while keeping strong feature learning.
 
-(I * K)(x, y) = &sum;<sub>i</sub> &sum;<sub>j</sub> I(x + i, y + j) K(i, j)
+$$(I * K)(x, y) = \sum_{i} \sum_{j} I(x + i,\; y + j) \cdot K(i, j)$$
 
-Mathematically, the convolution operation can be expressed as the above equation where I is the input image and K is the kernel.
+Mathematically, the convolution operation can be expressed as the above equation where $I$ is the input image and $K$ is the kernel (filter). The indices $i$ and $j$ range over the spatial dimensions of the kernel.
 
 Refer fig 1. To understand how convolution operation is actually performed by the kernel on an input image matrix and a feature map is calculated.
 
@@ -38,27 +39,27 @@ After convolution, the output is a feature map. Each filter detects a specific f
 
 ### VI. Stride and Padding
 
-Stride is how many pixels the filter shifts each step; a larger stride reduces the output size. Padding adds (usually zero) pixels around the input to control output dimensions and keep edge information. where N is the input size, F filter size, P padding, and S stride.
+Stride is how many pixels the filter shifts each step; a larger stride reduces the output size. Padding adds (usually zero) pixels around the input to control output dimensions and keep edge information. Where $N$ is the input size, $F$ the filter size, $P$ the padding, and $S$ the stride:
 
-Output = (N - F + 2P) / S + 1
+$$\text{Output feature map size} = \left\lfloor \frac{N - F + 2P}{S} \right\rfloor + 1$$
 
-Refer  fig 2 to understand how stride operation is performed on input  matrix with a kernel size of 3*3 to get output as 2*2.
+Refer to Fig 2 to understand how the stride operation is performed on an input matrix with a kernel of size $3 \times 3$ to get an output of size $2 \times 2$.
 
 <img src="images/image13.png" width="320">
 
-Output = (5 - 3 + 2*0) / 2 + 1 = 2
+$$\text{Output} = \left\lfloor \frac{5 - 3 + 2 \times 0}{2} \right\rfloor + 1 = 2$$
 
 <img src="images/image11.png" width="350">
 
-Refer to Fig 3 to visualise how our output feature map will look like if padding    is 1 so,
+Refer to Fig 3 to visualise how the output feature map looks when padding is 1:
 
-Output = (5 - 3 + 2*1) / 2 + 1 = 3
+$$\text{Output} = \left\lfloor \frac{5 - 3 + 2 \times 1}{2} \right\rfloor + 1 = 3$$
 
 ### VII. Activation Functions in CNNs
 
 After convolution, an activation function adds non-linearity. The most common is ReLU (Rectified Linear Unit):
 
-f(x) = max(0, x)
+$$f(x) = \max(0, x)$$
 
 which helps reduce vanishing gradients and speeds up training.
 

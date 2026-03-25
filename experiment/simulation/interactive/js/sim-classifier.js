@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 if (btn.dataset.tab === 'sim3') {
-                    setTimeout(drawLines, 200);
+                    setTimeout(() => { drawLines(); setTimeout(addHoverListeners, 100); }, 200);
                 }
             });
         });
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         createSoftmaxChart();
 
         // 3. Draw Lines (Static initially)
-        setTimeout(drawLines, 50);
+        setTimeout(() => { drawLines(); setTimeout(addHoverListeners, 100); }, 50);
     }
 
     function createColumn(label, count, id) {
@@ -305,6 +305,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // 4. Softmax
         const probs = softmax(logits);
         updateChart(probs, getTargetIndex(STATE.currentInputType));
+
+        // Re-attach hover listeners after forward pass updates lines
+        setTimeout(addHoverListeners, 50);
     }
 
     function getTargetIndex(type) {
@@ -376,6 +379,53 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('#sim3 .active-pos').forEach(e => e.classList.remove('active-pos'));
         document.querySelectorAll('#sim3 .active-neg').forEach(e => e.classList.remove('active-neg'));
         document.querySelectorAll('#sim3 .dropout').forEach(e => e.classList.remove('dropout'));
+    }
+
+    // --- Hover Tooltips ---
+    function addHoverListeners() {
+        const detail = document.getElementById('mathDetail3');
+        if (!detail) return;
+
+        const defaultHTML = detail.innerHTML;
+
+        function showInfo(html) {
+            detail.innerHTML = `<p style="margin:0;font-size:0.85rem;line-height:1.6;">${html}</p>`;
+        }
+
+        // Nodes
+        ELS.visual.querySelectorAll('.node').forEach(node => {
+            const id = node.id || '';
+            node.style.cursor = 'pointer';
+
+            node.addEventListener('mouseenter', () => {
+                if (id.startsWith('node-input3')) {
+                    showInfo('<strong>GAP Neuron</strong> — one of 256 feature values produced by Global Average Pooling. Each value is the spatial mean of one convolutional feature map: <em>a<sub>i</sub> = (1/HW) Σ feature_map<sub>i</sub></em>. These are the inputs to the first dense layer.');
+                } else if (id.startsWith('node-output3')) {
+                    const idx = parseInt(id.split('-').pop());
+                    const cls = CLASSES[idx] || `Class ${idx}`;
+                    showInfo(`<strong>Output Logit — ${cls}</strong> — raw score before softmax. Computed as <em>z = W·a + b</em>. Softmax converts this to a probability: <em>p<sub>${idx}</sub> = exp(z<sub>${idx}</sub>) / Σ exp(z<sub>k</sub>)</em>. The class with the highest probability is the model's prediction.`);
+                } else if (id.includes('hidden3')) {
+                    showInfo('<strong>Hidden Neuron</strong> — computes <em>z = W·a<sup>[l-1]</sup> + b</em>, then applies the activation: <em>a = f(z)</em>. With ReLU: <em>a = max(0, z)</em>. If marked as dropout, this neuron is set to 0 during training (randomly disabled at rate p) to reduce overfitting.');
+                }
+            });
+
+            node.addEventListener('mouseleave', () => {
+                detail.innerHTML = defaultHTML;
+            });
+        });
+
+        // Lines
+        const svg = document.getElementById('connSvg3');
+        if (!svg) return;
+        svg.querySelectorAll('line').forEach(line => {
+            line.style.cursor = 'pointer';
+            line.addEventListener('mouseenter', () => {
+                showInfo('<strong>Weight Connection</strong> — represents a learned weight <em>w<sub>ij</sub></em> connecting neuron <em>i</em> in layer <em>l−1</em> to neuron <em>j</em> in layer <em>l</em>. Contribution to the next neuron: <em>w<sub>ij</sub> × a<sub>i</sub></em>. During backpropagation the gradient is: <em>∂L/∂w<sub>ij</sub> = δ<sub>j</sub> × a<sub>i</sub></em>, and the weight is updated as <em>w<sub>ij</sub> ← w<sub>ij</sub> − η · ∂L/∂w<sub>ij</sub></em>.');
+            });
+            line.addEventListener('mouseleave', () => {
+                detail.innerHTML = defaultHTML;
+            });
+        });
     }
 
     // --- Math Helpers ---

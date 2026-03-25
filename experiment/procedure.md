@@ -31,9 +31,16 @@ Convert each image to a PyTorch tensor of shape (C, H, W) with values in [0, 1].
 
 #### b) Normalization (CIFAR-10)
 
-Normalize per channel to stabilize training:
-- Mean = (0.4914, 0.4822, 0.4465)
-- Std = (0.2470, 0.2435, 0.2616)
+Normalize each channel to stabilize training and speed up gradient descent. The formula applied per channel $c$ is:
+
+$$x'_c = \frac{x_c - \mu_c}{\sigma_c}$$
+
+where $x_c \in [0, 1]$ is the pixel value after tensor conversion, $\mu_c$ is the **per-channel mean** computed over the entire CIFAR-10 training set, and $\sigma_c$ is the corresponding **per-channel standard deviation**:
+
+- Mean $(\mu_R, \mu_G, \mu_B)$ = (0.4914, 0.4822, 0.4465)
+- Std $(\sigma_R, \sigma_G, \sigma_B)$ = (0.2470, 0.2435, 0.2616)
+
+These values reflect the average colour intensity and spread across all 50,000 CIFAR-10 training images per channel. After normalization, pixel values are approximately zero-centred with unit variance, giving a typical range of roughly $-2.1$ to $+2.5$ depending on the image.
 
 ### 5. Data loading and augmentation
 
