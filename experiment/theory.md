@@ -31,7 +31,11 @@ Where: $i, j = 1, 2, 3, 4, 5\ldots$
 
 **V. Activation Functions in CNNs**
 
-ReLU (Rectified Linear Unit): Applied after convolution, defined as $f(x) = \max(0, x)$ as shown in Fig 1.
+ReLU (Rectified Linear Unit): Applied after convolution, defined as:
+
+$$ReLU(x) = \max(0, x)$$
+
+as shown in Fig 1.
 
 ![Fig 1: Relu Function](images/image15.png)
 
