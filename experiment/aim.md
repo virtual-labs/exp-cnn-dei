@@ -1,3 +1,3 @@
 ### Aim
 
-To understand the theoretical foundations of Convolutional Neural Networks (CNNs) and their application to image classification, and to study how convolution, feature extraction, and pooling operations enable efficient learning from color images, preparing students for practical implementation on the CIFAR-10 dataset.
+To study the theoretical foundations of Convolutional Neural Networks (CNNs) and their role in image classification by introducing convolution, feature maps, and pooling operations for colour images, and to implement a small CNN on a CIFAR-10 subset (limited classes and epochs), visualising learned filters, intermediate feature maps, and class-wise performance results.
