@@ -1235,7 +1235,19 @@ line.connection {
     stroke: #94a3b8;
     stroke-width: 1;
     opacity: 0.25;
+    pointer-events: none;
     transition: stroke 0.3s, stroke-width 0.3s, opacity 0.3s;
+}
+
+line.connection-hit {
+    stroke: transparent;
+    stroke-width: 10;
+    pointer-events: stroke;
+    cursor: pointer;
+}
+
+#sim3 .math-detail-box {
+    white-space: normal;
 }
 
 line.connection.active-pos {

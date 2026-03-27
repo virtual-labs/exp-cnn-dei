@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Auto-redraw connections when tab becomes visible or container resizes
         const observer = new ResizeObserver(() => {
-            setTimeout(drawLines, 100);
+            setTimeout(() => { drawLines(); setTimeout(addHoverListeners, 100); }, 100);
         });
         observer.observe(ELS.visual);
 
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Initial draw with delay for DOM to settle
-        setTimeout(drawLines, 500);
+        setTimeout(() => { drawLines(); setTimeout(addHoverListeners, 100); }, 500);
     }
 
     function setupEvents() {
@@ -256,6 +256,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Store indices for activation logic
                 line.id = `line3-${srcId}-${i}-${dstId}-${j}`;
                 svg.appendChild(line);
+
+                // Invisible wider hit area for hover detection
+                const hitLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                hitLine.setAttribute('x1', x1);
+                hitLine.setAttribute('y1', y1);
+                hitLine.setAttribute('x2', x2);
+                hitLine.setAttribute('y2', y2);
+                hitLine.setAttribute('class', 'connection-hit');
+                hitLine.dataset.targetId = `line3-${srcId}-${i}-${dstId}-${j}`;
+                svg.appendChild(hitLine);
             }
         }
     }
@@ -399,13 +409,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             node.addEventListener('mouseenter', () => {
                 if (id.startsWith('node-input3')) {
-                    showInfo('<strong>GAP Neuron</strong> — one of 256 feature values produced by Global Average Pooling. Each value is the spatial mean of one convolutional feature map: <em>a<sub>i</sub> = (1/HW) Σ feature_map<sub>i</sub></em>. These are the inputs to the first dense layer.');
+                    showInfo('<strong>GAP Neuron</strong> — one of 256 input values produced by Global Average Pooling. Each value is the spatial average of one feature map, representing how strongly a particular pattern was detected across the image.');
                 } else if (id.startsWith('node-output3')) {
                     const idx = parseInt(id.split('-').pop());
                     const cls = CLASSES[idx] || `Class ${idx}`;
-                    showInfo(`<strong>Output Logit — ${cls}</strong> — raw score before softmax. Computed as <em>z = W·a + b</em>. Softmax converts this to a probability: <em>p<sub>${idx}</sub> = exp(z<sub>${idx}</sub>) / Σ exp(z<sub>k</sub>)</em>. The class with the highest probability is the model's prediction.`);
+                    showInfo(`<strong>Output Logit — ${cls}</strong> — the network\'s raw confidence score for the class "${cls}". A higher score means the network is more confident the input belongs to this class. Softmax converts all 10 scores into probabilities that sum to 1.`);
                 } else if (id.includes('hidden3')) {
-                    showInfo('<strong>Hidden Neuron</strong> — computes <em>z = W·a<sup>[l-1]</sup> + b</em>, then applies the activation: <em>a = f(z)</em>. With ReLU: <em>a = max(0, z)</em>. If marked as dropout, this neuron is set to 0 during training (randomly disabled at rate p) to reduce overfitting.');
+                    showInfo('<strong>Hidden Neuron</strong> — a learnable unit that combines all inputs from the previous layer using a weighted sum, then applies an activation function (e.g. ReLU). If greyed out, it has been dropped out — randomly disabled during training to reduce overfitting.');
                 }
             });
 
@@ -414,15 +424,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Lines
+        // Lines — use hit-area elements for reliable hover detection
         const svg = document.getElementById('connSvg3');
         if (!svg) return;
-        svg.querySelectorAll('line').forEach(line => {
-            line.style.cursor = 'pointer';
-            line.addEventListener('mouseenter', () => {
-                showInfo('<strong>Weight Connection</strong> — represents a learned weight <em>w<sub>ij</sub></em> connecting neuron <em>i</em> in layer <em>l−1</em> to neuron <em>j</em> in layer <em>l</em>. Contribution to the next neuron: <em>w<sub>ij</sub> × a<sub>i</sub></em>. During backpropagation the gradient is: <em>∂L/∂w<sub>ij</sub> = δ<sub>j</sub> × a<sub>i</sub></em>, and the weight is updated as <em>w<sub>ij</sub> ← w<sub>ij</sub> − η · ∂L/∂w<sub>ij</sub></em>.');
+        svg.querySelectorAll('line.connection-hit').forEach(hitLine => {
+            hitLine.addEventListener('mouseenter', () => {
+                showInfo('<strong>Weight Connection</strong> — a learnable number (weight) that scales how strongly one neuron influences the next. Bright connections carry stronger signals; dim ones carry weaker signals. All weights are adjusted during training to minimise the prediction error.');
             });
-            line.addEventListener('mouseleave', () => {
+            hitLine.addEventListener('mouseleave', () => {
                 detail.innerHTML = defaultHTML;
             });
         });
