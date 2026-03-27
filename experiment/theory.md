@@ -37,11 +37,17 @@ $$ReLU(x) = \max(0, x)$$
 
 as shown in Fig 1.
 
-![Fig 1: Relu Function](images/image15.png)
+<p style="text-align:center">
+<img src="images/image15.png" width="320" alt="Fig 1: Relu Function"><br>
+<em>Fig 1: Relu Function</em>
+</p>
 
 Refer Figure 2 shown below to understand how the Relu function affects the filter output
 
-![Fig 2: ReLU activation function applied on input matrix](images/image10.png)
+<p style="text-align:center">
+<img src="images/image10.png" width="500" alt="Fig 2: ReLU activation function applied on input matrix"><br>
+<em>Fig 2: ReLU activation function applied on input matrix</em>
+</p>
 
 **VI. Convolution Operation**
 
@@ -53,7 +59,10 @@ $$(I * K)(x, y) = \sum_{i}\sum_{j} I(x+i,\, y+j)\, K(i,j)$$
 
 Refer fig 3. To understand how convolution operation is actually performed by the kernel on an input image matrix and a feature map is calculated.
 
-![Fig 3: showing how kernel slides and calculate the feature map in convolution operation](images/image18.png)
+<p style="text-align:center">
+<img src="images/image18.png" width="500" alt="Fig 3: showing how kernel slides and calculate the feature map in convolution operation"><br>
+<em>Fig 3: showing how kernel slides and calculate the feature map in convolution operation</em>
+</p>
 
 **Learnable Parameters:** The "weights" in the filter are not hand-designed; the network learns the best values to detect features like edges automatically.
 
@@ -69,13 +78,19 @@ $$\text{Output} = \left\lfloor\frac{N - F + 2P}{S}\right\rfloor + 1$$
 
 Refer fig 4 to understand how stride operation is performed on an input matrix with a kernel size of 3 × 3 to get output as 2 × 2.
 
-![Fig 4: showing the output feature map when 3×3 kernel with stride 2 is applied on 4×4 image to produce 2×2 output](images/image13.png)
+<p style="text-align:center">
+<img src="images/image13.png" width="320" alt="Fig 4: showing the output feature map when 3×3 kernel with stride 2 is applied on 4×4 image to produce 2×2 output"><br>
+<em>Fig 4: showing the output feature map when 3×3 kernel with stride 2 is applied on 4×4 image to produce 2×2 output</em>
+</p>
 
 $$\text{Output Feature Map} = \frac{5 - 3 + 2 \cdot 0}{2} + 1 = 2$$
 
 Refer to Fig 5 to visualise how our output feature map will look like if padding is 1 so,
 
-![Fig 5: This shows 3×3 filter with padding of 1 on 3×3 matrix](images/image11.png)
+<p style="text-align:center">
+<img src="images/image11.png" width="320" alt="Fig 5: This shows 3×3 filter with padding of 1 on 3×3 matrix"><br>
+<em>Fig 5: This shows 3×3 filter with padding of 1 on 3×3 matrix</em>
+</p>
 
 $$\text{Output Feature Map} = \frac{3 - 3 + 2 \cdot 1}{1} + 1 = 3$$
 
@@ -87,13 +102,19 @@ Pooling downsamples feature maps to reduce computation and make features more ro
 
 Max pooling is a pooling operation that selects the maximum element from the region of the feature map covered by the filter. Thus, the output after max-pooling layer would be a feature map containing the most prominent features of the previous feature map as shown in Fig 6.
 
-![Fig 6: Max pooling of is applied on a feature map](images/image16.png)
+<p style="text-align:center">
+<img src="images/image16.png" width="500" alt="Fig 6: Max pooling is applied on a feature map"><br>
+<em>Fig 6: Max pooling is applied on a feature map</em>
+</p>
 
 **ii. Average Pooling**
 
 Average pooling computes the average of the elements present in the region of the feature map covered by the filter. Thus, while max pooling gives the most prominent feature in a particular patch of the feature map, average pooling gives the average of features present in a patch as shown in Fig 7.
 
-![Fig 7: showing average pooling operation on matrix](images/image17.png)
+<p style="text-align:center">
+<img src="images/image17.png" width="500" alt="Fig 7: showing average pooling operation on matrix"><br>
+<em>Fig 7: showing average pooling operation on matrix</em>
+</p>
 
 **iii. Global Average Pooling (GAP)**
 
@@ -109,7 +130,10 @@ Its key roles in the architecture include:
 
 Before entering the fully connected layer, the featuremaps from the previous convolutional and pooling layers are typically flattened into a one-dimensional vector as shown in Fig 8.This is done to convert the spatial information into a format suitable for fully connected layers.
 
-![Fig 8: showing how flattening converts matrix in 1D vector](images/image12.png)
+<p style="text-align:center">
+<img src="images/image12.png" width="360" alt="Fig 8: showing how flattening converts matrix in 1D vector"><br>
+<em>Fig 8: showing how flattening converts matrix in 1D vector</em>
+</p>
 
 **XI. Advanced Training Techniques**
 
@@ -123,7 +147,11 @@ Before entering the fully connected layer, the featuremaps from the previous con
 
 A typical CNN stacks convolution, activation, and pooling layers to extract features, then uses fully connected layers or global pooling as a classifier as shown in Fig. 9. This pipeline enables strong image recognition performance with efficient use of parameters.
 
-![Fig 9: Complete CNN architecture](images/image14.png)
+<p style="text-align:center">
+<img src="images/image14.png" width="560" alt="Fig 9: Complete CNN architecture"><br>
+<em>Fig 9: Complete CNN architecture</em><br>
+<em>Source: Yamashita et al., Convolutional neural networks: an overview and application, 2018.</em>
+</p>
 
 **Merits of Convolutional Neural Networks:**
 *   Efficient parameter sharing (fewer weights than fully connected networks)
