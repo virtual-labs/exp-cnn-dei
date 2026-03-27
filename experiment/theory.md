@@ -38,7 +38,7 @@ $$ReLU(x) = \max(0, x)$$
 as shown in Fig 1.
 
 <p style="text-align:center">
-<img src="images/image15.png" width="320" alt="Fig 1: Relu Function"><br>
+<img src="images/image15.png" width="500" alt="Fig 1: Relu Function"><br>
 <em>Fig 1: Relu Function</em>
 </p>
 
