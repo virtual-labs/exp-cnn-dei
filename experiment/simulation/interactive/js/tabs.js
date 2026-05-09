@@ -16,12 +16,6 @@
         const tabButtons = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
 
-        // Collapse bottom panels for sim2 and sim3 by default
-        const sim2Panel = document.querySelector('#sim2 .bottom-panel-wrapper');
-        const sim3Panel = document.querySelector('#sim3 .bottom-panel-wrapper');
-        if (sim2Panel) sim2Panel.classList.add('collapsed');
-        if (sim3Panel) sim3Panel.classList.add('collapsed');
-
         tabButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 const tabId = btn.dataset.tab;

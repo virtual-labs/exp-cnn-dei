@@ -946,12 +946,7 @@ input:checked+.slider:before {
     transition: max-height 0.3s ease;
 }
 
-/* Default collapsed state for sim2 and sim3 */
-#sim2 .bottom-panel-wrapper,
-#sim3 .bottom-panel-wrapper {
-    max-height: 28px;
-}
-
+/* Control panel: visible by default, collapsible by user */
 #sim2 .bottom-panel-wrapper.collapsed,
 #sim3 .bottom-panel-wrapper.collapsed {
     max-height: 28px;
@@ -959,7 +954,7 @@ input:checked+.slider:before {
 
 #sim2 .bottom-panel-wrapper:not(.collapsed),
 #sim3 .bottom-panel-wrapper:not(.collapsed) {
-    max-height: 300px;
+    max-height: clamp(180px, 32vh, 340px);
 }
 
 .bottom-panel-toggle {
@@ -1558,7 +1553,7 @@ line.connection.active-neg {
     }
 
     .right-area-col {
-        grid-template-rows: 1.2fr 1fr;
+        grid-template-rows: 1fr auto;
     }
 
     .canvas-container canvas {
@@ -1633,7 +1628,12 @@ line.connection.active-neg {
 
 @media (max-height: 800px) {
     .right-area-col {
-        grid-template-rows: 1fr 1fr;
+        grid-template-rows: 1fr auto;
+    }
+
+    #sim2 .bottom-panel-wrapper:not(.collapsed),
+    #sim3 .bottom-panel-wrapper:not(.collapsed) {
+        max-height: clamp(160px, 28vh, 260px);
     }
 
     .canvas-container canvas {
@@ -1710,6 +1710,10 @@ line.connection.active-neg {
     }
 
     .pane-bottom-split {
+        display: none !important;
+    }
+
+    .bottom-panel-wrapper {
         display: none !important;
     }
 
@@ -1792,5 +1796,212 @@ line.connection.active-neg {
     .sidebar,
     .pane-theory {
         min-width: 160px;
+    }
+}
+
+/* ============================================
+   MOBILE RESPONSIVE (768px and below)
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* Allow scrolling on mobile */
+    body {
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
+    }
+
+    /* Tab nav: wrap buttons, hide logo, use natural height */
+    .tab-navigation {
+        position: relative;
+        height: auto;
+        padding: 6px 8px;
+        padding-left: 8px;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .tab-navigation .logo {
+        display: none;
+    }
+
+    .tab-btn {
+        padding: 6px 10px;
+        font-size: 0.72rem;
+        flex-shrink: 1;
+    }
+
+    /* Main content: un-fix, let it flow after nav */
+    .main-content {
+        position: static;
+        overflow: visible;
+        height: auto;
+    }
+
+    .tab-content {
+        height: auto;
+        overflow: visible;
+    }
+
+    .tab-content.active {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Sim 1: single-column stacked layout */
+    .app-container {
+        grid-template-columns: 1fr !important;
+        height: auto;
+        overflow: visible;
+    }
+
+    /* Sim 2 & 3: single-column */
+    .app-container-4pane {
+        grid-template-columns: 1fr !important;
+        height: auto;
+        overflow: visible;
+    }
+
+    /* Show sidebars (they were hidden at 900px) */
+    .control-sidebar {
+        display: flex !important;
+    }
+
+    /* Sidebar: limit height with scroll */
+    .sidebar,
+    .pane-theory {
+        max-height: 260px;
+        min-width: 0;
+    }
+
+    /* Canvas: scale to viewport */
+    .canvas-container canvas {
+        width: min(140px, 38vw);
+        height: min(140px, 38vw);
+    }
+
+    .hover-guide {
+        width: 4.375px;
+        height: 4.375px;
+    }
+
+    /* Canvas stage: wrap items */
+    .canvas-stage {
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 0.75rem;
+        justify-content: center;
+    }
+
+    .stage-arrow {
+        font-size: 1.2rem;
+    }
+
+    /* Image grid: fewer columns */
+    .image-grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-height: 140px;
+    }
+
+    /* Controls grid: single column */
+    .controls-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Bottom split: single column */
+    .pane-bottom-split {
+        grid-template-columns: 1fr;
+    }
+
+    /* Analytics row: vertical stack */
+    .analytics-row {
+        flex-direction: column;
+        min-height: auto;
+        max-height: none;
+    }
+
+    .stats-box {
+        width: 100%;
+    }
+
+    /* Right area: natural height */
+    .right-area-col {
+        height: auto;
+        overflow: visible;
+    }
+
+    /* Pane stage: allow natural height */
+    .pane-stage {
+        height: auto;
+        overflow: visible;
+        min-height: 0;
+    }
+
+    /* Info box: shrink on mobile */
+    .info-box {
+        min-width: auto;
+        font-size: 0.72rem;
+        white-space: normal;
+        word-break: break-all;
+    }
+
+    .pixel-info-bar {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    /* Visual chain: wrap on mobile */
+    .visual-chain {
+        flex-wrap: wrap;
+        overflow-x: visible;
+        justify-content: center;
+    }
+
+    /* Bottom panel wrapper: show, not fixed height */
+    .bottom-panel-wrapper {
+        max-height: none !important;
+    }
+
+    /* FC visual container */
+    .fc-visual-container {
+        gap: 1rem;
+        padding: 0.75rem;
+    }
+}
+
+/* ============================================
+   SMALL PHONES (480px and below)
+   ============================================ */
+
+@media (max-width: 480px) {
+    .tab-btn {
+        padding: 5px 7px;
+        font-size: 0.68rem;
+    }
+
+    .canvas-container canvas {
+        width: min(120px, 40vw);
+        height: min(120px, 40vw);
+    }
+
+    .image-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .glass-panel {
+        padding: 0.75rem;
+    }
+
+    .sidebar,
+    .pane-theory {
+        max-height: 200px;
+    }
+
+    .stage-header,
+    .sim-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+        padding: 0.5rem 0.75rem;
     }
 }
