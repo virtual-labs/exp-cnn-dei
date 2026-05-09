@@ -1937,6 +1937,22 @@ line.connection.active-neg {
         min-height: 0;
     }
 
+    /* Stage controls: wrap on small screens */
+    .stage-controls {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .stage-controls button {
+        padding: 6px 10px;
+        font-size: 0.78rem;
+    }
+
+    .nav-group {
+        display: flex;
+        gap: 4px;
+    }
+
     /* Info box: shrink on mobile */
     .info-box {
         min-width: auto;
@@ -1950,11 +1966,64 @@ line.connection.active-neg {
         flex-wrap: wrap;
     }
 
-    /* Visual chain: wrap on mobile */
+    /* Sim 2: visual chain vertical on mobile */
     .visual-chain {
+        flex-direction: column !important;
+        flex-wrap: nowrap;
+        overflow-x: hidden;
+        overflow-y: visible;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 1rem;
+        gap: 4px;
+    }
+
+    /* Outer chain arrows: rotate ➔ to ↓ */
+    .visual-chain > .connector-arrow,
+    .block-container > .connector-arrow {
+        transform: rotate(90deg);
+        margin: 2px 0;
+    }
+
+    /* Block container: row layout stays, centering */
+    .block-container {
+        flex-direction: row !important;
         flex-wrap: wrap;
-        overflow-x: visible;
         justify-content: center;
+        width: 100%;
+        gap: 8px;
+    }
+
+    /* Op-view: make kernel+arrow side by side */
+    .op-view {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    /*
+     * Sim 2: scale canvas-wrappers down using transform (preserves overlay positions)
+     * Canvas is 300px DOM, scale 0.5 → 150px visual.
+     * Negative margins collapse the excess layout space (75px each side).
+     */
+    #sim2 .canvas-wrapper {
+        transform: scale(0.5);
+        transform-origin: center center;
+        margin: -75px;
+    }
+
+    /* Kernel display: compact on mobile */
+    #sim2 .kernel-display {
+        padding: 8px;
+        transform: scale(0.8);
+        transform-origin: center center;
+        margin: -10px;
+    }
+
+    #sim2 .k-cell {
+        width: 18px;
+        height: 18px;
+        font-size: 7px;
     }
 
     /* Bottom panel wrapper: show, not fixed height */
@@ -1962,11 +2031,112 @@ line.connection.active-neg {
         max-height: none !important;
     }
 
-    /* FC visual container */
+    /* Sim 3: FC visual container — horizontal scroll with smaller nodes */
     .fc-visual-container {
-        gap: 1rem;
-        padding: 0.75rem;
+        overflow-x: auto;
+        overflow-y: visible;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 3rem 1rem 1rem;
+        gap: 1.5rem;
     }
+
+    /* Smaller nodes on mobile */
+    .node {
+        width: 18px;
+        height: 18px;
+    }
+
+    #col-input .node {
+        width: 7px;
+        height: 7px;
+    }
+
+    .layer-label {
+        top: -40px;
+        font-size: 0.7rem;
+        width: 90px;
+    }
+
+    /* Scale down chart container */
+    .fc-visual-container .chart-container {
+        width: 200px !important;
+        min-width: 200px !important;
+        height: 240px !important;
+    }
+
+    /* Theory popup button: visible only on mobile */
+    .theory-open-btn {
+        display: flex !important;
+    }
+
+    /* Theory sidebar: hidden in flow, shown as popup */
+    .sidebar {
+        display: none !important;
+        position: fixed !important;
+        inset: 0 !important;
+        max-height: none !important;
+        border-radius: 0 !important;
+        z-index: 3000 !important;
+        overflow-y: auto !important;
+        padding: 1.5rem !important;
+        width: 100% !important;
+        animation: slideUp 0.25s ease;
+    }
+
+    .sidebar.popup-open {
+        display: flex !important;
+    }
+
+    .sidebar-close-btn {
+        display: flex !important;
+    }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Theory popup button: hidden on desktop */
+.theory-open-btn {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0.75rem;
+    width: calc(100% - 1.5rem);
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.theory-open-btn:hover {
+    background: #2563eb;
+}
+
+/* Sidebar close button: hidden on desktop */
+.sidebar-close-btn {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text-main);
+    align-self: flex-end;
+    margin-bottom: 0.75rem;
+    flex-shrink: 0;
 }
 
 /* ============================================
@@ -1992,16 +2162,25 @@ line.connection.active-neg {
         padding: 0.75rem;
     }
 
-    .sidebar,
-    .pane-theory {
-        max-height: 200px;
-    }
-
     .stage-header,
     .sim-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.4rem;
         padding: 0.5rem 0.75rem;
+    }
+
+    .node {
+        width: 14px;
+        height: 14px;
+    }
+
+    #col-input .node {
+        width: 5px;
+        height: 5px;
+    }
+
+    .fc-visual-container {
+        gap: 1rem;
     }
 }

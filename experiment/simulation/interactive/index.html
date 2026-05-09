@@ -51,9 +51,17 @@
         <!-- SIMULATION 1: Data & Preprocessing -->
         <!-- ============================================ -->
         <div id="sim1" class="tab-content active">
+            <!-- Theory button: mobile only -->
+            <button class="theory-open-btn" onclick="document.getElementById('theorySidebar1').classList.add('popup-open')">
+                📖 Theory — Data &amp; Preprocessing
+            </button>
+
             <div class="app-container">
                 <!-- Sidebar: Explanation & Theory -->
-                <aside class="sidebar glass-panel">
+                <aside class="sidebar glass-panel" id="theorySidebar1">
+                    <button class="sidebar-close-btn" onclick="document.getElementById('theorySidebar1').classList.remove('popup-open')">
+                        ✕ Close
+                    </button>
                     <header>
                         <h1>CNN Explorer</h1>
                         <h2>1. Data & Preprocessing</h2>
