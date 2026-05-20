@@ -1,12 +1,12 @@
 ## Procedure
 
-The objective of this experiment is to implement a Convolutional Neural Networks (CNN) for multi-class image classification and to analyze its performance on a real-world colour image dataset. This experiment focuses on understanding convolutional feature extraction, pooling operations, data augmentation, training dynamics, and evaluation strategies using the CIFAR-10 dataset.
+The objective of this experiment is to implement a Convolutional Neural Network (CNN) for multi-class image classification and to analyze its performance on a real-world color image dataset. This experiment focuses on understanding convolutional feature extraction, pooling operations, data augmentation, training dynamics, and evaluation strategies using the CIFAR-10 dataset.
 
 ### 1. Import Required Libraries
 
-- **PyTorch** (torch, torch.nn, torch.): build the CNN, define loss, and train the model.
+- **PyTorch** (torch and torch.nn): It helps to build the CNN, define the loss, and train the model.
 - **Torchvision** (torchvision.datasets, torchvision.transforms): load CIFAR-10 and apply image preprocessing/augmentation.
-- **NumPy** (numpy): basic numerical utilities
+- **NumPy** (numpy): import basic numerical utilities
 - **Matplotlib** (matplotlib.pyplot): visualize sample images and training/validation graphs.
 
 ### 2. Dataset Loading and Description
@@ -31,20 +31,19 @@ Convert each image to a PyTorch tensor of shape (C, H, W) with values in [0, 1].
 
 #### b) Normalization (CIFAR-10)
 
-Normalize each channel to stabilize training and speed up gradient descent. The formula applied per channel $c$ is:
+Per-Channel Statistics: Since CIFAR-10 images are in RGB (Red, Green, Blue) format, there are three separate values for both the mean and standard deviation, each corresponding to one of these color channels.
 
-$$x'_c = \frac{x_c - \mu_c}{\sigma_c}$$
+CIFAR-10 Specifics: For this dataset, the values are:
+- Mean (R, G, B): (0.4914, 0.4822, 0.4465).
+- Standard Deviation (R, G, B): (0.2470, 0.2435, 0.2616) or commonly (0.2023, 0.1994, 0.2010) depending on the pre-computation used.
 
-where $x_c \in [0, 1]$ is the pixel value after tensor conversion, $\mu_c$ is the **per-channel mean** computed over the entire CIFAR-10 training set, and $\sigma_c$ is the corresponding **per-channel standard deviation**:
-
-- Mean $(\mu_R, \mu_G, \mu_B)$ = (0.4914, 0.4822, 0.4465)
-- Std $(\sigma_R, \sigma_G, \sigma_B)$ = (0.2470, 0.2435, 0.2616)
-
-These values reflect the average colour intensity and spread across all 50,000 CIFAR-10 training images per channel. After normalization, pixel values are approximately zero-centred with unit variance, giving a typical range of roughly $-2.1$ to $+2.5$ depending on the image.
+It is critical for training because:
+- **Gradient Stability:** Neural networks train much more effectively when input features are on a similar scale. This prevents some pixels from "overpowering" others during the learning process.
+- **Faster Convergence:** By ensuring stable gradients, the model can reach the optimal solution (converge) much faster than it would with unscaled raw data.
 
 ### 5. Data loading and augmentation
 
-- **Augment and  preprocess (train only):** random horizontal flip, random crop with padding, AutoAugment all these  increase diversity, reduces overfitting, improves generalization.
+- **Augment and preprocess (train only):** The random horizontal flip, random crop with padding, and AutoAugment increase diversity, reduce overfitting, and improve generalization.
 - **Create DataLoaders (train & test):** load data in mini-batches for faster, GPU-friendly training and evaluation.
 - **Shuffling rule:** shuffle training loader (avoid order bias), no shuffle for test loader (consistent evaluation).
 
@@ -72,7 +71,7 @@ After training, the CNN is evaluated on unseen test data to assess its generaliz
 ### 10. Result Visualization
 
 - Plot train vs test curves for loss and accuracy to check convergence/overfitting.
-- Show a few sample predictions with true label + predicted label (optionally confidence) for qualitative evaluation.
+- Show a few sample predictions with true label + predicted label (optionally, confidence) for qualitative evaluation.
 
 ### 11. Performance Analysis
 

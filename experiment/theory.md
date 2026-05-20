@@ -10,15 +10,15 @@ A digital image can be represented as a 3D array (Tensor) with Height, Width, an
 
 **III. Revised Data Normalization**
 
-Raw pixel values range from 0 to 255. Before training, we scale these values using a specific Mean and Standard Deviation (e.g., Mean: 0.4914, Std: 0.2470 for CIFAR-10).It scales input features to a similar range, which ensures gradient stability and allows the model to converge (learn) faster.
+Raw pixel values range from 0 to 255. Before training, we scale these values using a specific Mean and Standard Deviation (e.g., Mean: 0.4914, Std: 0.2470 for CIFAR-10). It scales input features to a similar range, ensuring gradient stability and allowing the model to converge (learn) faster.
 
 **IV. Revised Neurons in the Convolutional Layer**
 
 **Local Connectivity:** Unlike standard neurons that try to look at an entire image at once, a CNN neuron focuses only on a small, specific window of the image called the receptive field. This "local connectivity" ensures the network can focus on small details rather than getting overwhelmed by the whole picture.
 
-**Calculate Weighted Sum & Bias:** Inside this small window, the neuron performs a simple mathematical operation. It takes the pixel values in that area and multiplies them by its own learned weights (stored in a filter or kernel). It adds these results together along with a bias to produce a single numerical value. This value represents how strongly a specific feature, like a vertical edge, is present in that spot.
+**Calculate Weighted Sum & Bias:** Inside this small window, the neuron performs a simple mathematical operation. It takes the pixel values in that area and multiplies them by its own learned weights (stored in a filter or kernel). It adds these results together, along with a bias, to produce a single numerical value. This value represents how strongly a specific feature, such as a vertical edge, is present at that location.
 
-**Activation & Feature Creation:** Finally, this value is passed through an activation function (like ReLU) to introduce non-linearity, allowing the network to learn more complex patterns. The resulting number becomes one single "pixel" or element in a new grid called a feature map. Below is the equation to calculate the output of a single neuron within a convolutional layer.
+**Activation & Feature Creation:** Finally, this value is passed through an activation function (such as ReLU) to introduce nonlinearity, allowing the network to learn more complex patterns. The resulting number becomes one single "pixel" or element in a new grid called a feature map. Below is the equation for calculating the output of a single neuron in a convolutional layer.
 
 $$Y = f\left(\sum_{i=1}^{m}\sum_{j=1}^{n} w_{ij}\, x_{ij} + b\right)$$
 
@@ -42,7 +42,7 @@ as shown in Fig 1.
 <em>Fig 1: Relu Function</em>
 </p>
 
-Refer Figure 2 shown below to understand how the Relu function affects the filter output
+Refer Fig 2 shown below to understand how the ReLU function affects the filter output
 
 <p style="text-align:center">
 <img src="images/image10.png" width="500" alt="Fig 2: ReLU activation function applied on input matrix"><br>
@@ -51,13 +51,13 @@ Refer Figure 2 shown below to understand how the Relu function affects the filte
 
 **VI. Convolution Operation**
 
-Convolution slides a small filter over the image and computes weighted sums to capture local features, such as edges and textures. Reusing the same filter across the image reduces parameters while keeping strong feature learning.
+Convolution slides a small filter over the image and computes weighted sums to capture local features, such as edges and textures. Reusing the same filter across the image reduces the number of parameters while preserving strong feature learning.
 
-Mathematically, the convolution operation can be expressed as the above equation where $I$ is the input image and $K$ is the kernel.
+Mathematically, the convolution operation can be expressed as the above equation, where $I$ is the input image, and $K$ is the kernel.
 
 $$(I * K)(x, y) = \sum_{i}\sum_{j} I(x+i,\, y+j)\, K(i,j)$$
 
-Refer fig 3. To understand how convolution operation is actually performed by the kernel on an input image matrix and a feature map is calculated.
+Refer to Fig. 3 to understand how the convolution operation is actually performed by the kernel on an input image matrix, and a feature map is calculated.
 
 <p style="text-align:center">
 <img src="images/image18.png" width="500" alt="Fig 3: showing how kernel slides and calculate the feature map in convolution operation"><br>
@@ -72,11 +72,11 @@ After convolution, the output is a feature map. Each filter detects a specific f
 
 **VIII. Stride and Padding**
 
-Stride is how many pixels the filter shifts each step; a larger stride reduces the output size. Padding adds (usually zero) pixels around the input to control output dimensions and keep edge information.Below is the equation for output Feature Map if stride and padding is introduced on input image where $N$ = Input size, $F$ = Filter size, $P$ = Padding, and $S$ = Stride.
+Stride is how many pixels the filter shifts each step; a larger stride reduces the output size. Padding adds (usually zero) pixels around the input to control output dimensions and keep edge information. Below is the equation for the output Feature Map if stride and padding are introduced on the input image, where $N$ = Input size, $F$ = Filter size, $P$ = Padding, and $S$ = Stride.
 
 $$\text{Output} = \left\lfloor\frac{N - F + 2P}{S}\right\rfloor + 1$$
 
-Refer fig 4 to understand how stride operation is performed on an input matrix with a kernel size of 3 × 3 to get output as 2 × 2.
+Refer to Fig. 4 to understand how the stride operation is performed on an input matrix with a kernel size of 3 × 3 to get an output of 2 × 2.
 
 <p style="text-align:center">
 <img src="images/image13.png" width="320" alt="Fig 4: showing the output feature map when 3×3 kernel with stride 2 is applied on 4×4 image to produce 2×2 output"><br>
@@ -85,7 +85,7 @@ Refer fig 4 to understand how stride operation is performed on an input matrix w
 
 $$\text{Output Feature Map} = \frac{5 - 3 + 2 \cdot 0}{2} + 1 = 2$$
 
-Refer to Fig 5 to visualise how our output feature map will look like if padding is 1 so,
+Refer to Fig 5 to visualize how our output feature map will look if padding is 1, so
 
 <p style="text-align:center">
 <img src="images/image11.png" width="320" alt="Fig 5: This shows 3×3 filter with padding of 1 on 3×3 matrix"><br>
@@ -96,11 +96,11 @@ $$\text{Output Feature Map} = \frac{3 - 3 + 2 \cdot 1}{1} + 1 = 3$$
 
 **IX. Downsampling: Pooling Layers**
 
-Pooling downsamples feature maps to reduce computation and make features more robust to small shifts. Common types are max pooling, average pooling, and global average pooling, and they can also help reduce overfitting.
+Pooling downsamples feature maps by reducing their spatial dimensions while retaining important features. Common types include max pooling, average pooling, and global average pooling, which can also help reduce overfitting.
 
 **i. Max Pooling**
 
-Max pooling is a pooling operation that selects the maximum element from the region of the feature map covered by the filter. Thus, the output after max-pooling layer would be a feature map containing the most prominent features of the previous feature map as shown in Fig 6.
+Max pooling is a pooling operation that selects the maximum element from the region of the feature map covered by the filter. Thus, the output after the max-pooling layer would be a feature map containing the most prominent features of the previous feature map, as shown in Fig 6.
 
 <p style="text-align:center">
 <img src="images/image16.png" width="500" alt="Fig 6: Max pooling is applied on a feature map"><br>
@@ -109,7 +109,7 @@ Max pooling is a pooling operation that selects the maximum element from the reg
 
 **ii. Average Pooling**
 
-Average pooling computes the average of the elements present in the region of the feature map covered by the filter. Thus, while max pooling gives the most prominent feature in a particular patch of the feature map, average pooling gives the average of features present in a patch as shown in Fig 7.
+Average pooling computes the average of the elements present in the region of the feature map covered by the filter. Thus, while max pooling gives the most prominent feature in a particular patch of the feature map, average pooling gives the average of the features present in a patch, as shown in Fig 7.
 
 <p style="text-align:center">
 <img src="images/image17.png" width="500" alt="Fig 7: showing average pooling operation on matrix"><br>
@@ -118,9 +118,9 @@ Average pooling computes the average of the elements present in the region of th
 
 **iii. Global Average Pooling (GAP)**
 
-GAP is a downsampling operation typically used at the end of a CNN's feature extraction pipeline to prepare data for the final classification. Unlike standard pooling that operates on small local regions, GAP summarizes each entire feature map into a single numerical value by calculating the average of all pixels in that map.
+GAP is a downsampling operation typically used at the end of a CNN's feature-extraction pipeline to prepare the data for final classification. Unlike standard pooling, which operates on small local regions, GAP summarizes each entire feature map into a single numerical value by averaging all pixels in that map.
 
-Its key roles in the architecture include:
+Its key roles in architecture include:
 *   **Spatial Aggregation:** It aggregates all spatial information across a feature map, making the network's final decision more robust to the specific location of a feature.
 *   **Vector Conversion:** It converts 3D feature maps into a single 1D feature vector, which is then used by the classifier to produce the final prediction.
 *   **Parameter Efficiency:** By replacing traditional flattening and large fully connected layers, GAP significantly reduces the number of trainable parameters.
@@ -128,7 +128,7 @@ Its key roles in the architecture include:
 
 **X. Flattening**
 
-Before entering the fully connected layer, the featuremaps from the previous convolutional and pooling layers are typically flattened into a one-dimensional vector as shown in Fig 8.This is done to convert the spatial information into a format suitable for fully connected layers.
+Before entering the fully connected layer, the feature maps from the previous convolutional and pooling layers are typically flattened into a one-dimensional vector, as shown in Fig 8. This is done to convert multidimensional feature maps into a 1D vector suitable for fully connected layers.
 
 <p style="text-align:center">
 <img src="images/image12.png" width="360" alt="Fig 8: showing how flattening converts matrix in 1D vector"><br>
@@ -145,7 +145,7 @@ Before entering the fully connected layer, the featuremaps from the previous con
 
 **XII. Overall CNN Architecture**
 
-A typical CNN stacks convolution, activation, and pooling layers to extract features, then uses fully connected layers or global pooling as a classifier as shown in Fig. 9. This pipeline enables strong image recognition performance with efficient use of parameters.
+A typical CNN stacks convolution, activation, and pooling layers to extract features, then uses fully connected layers or global pooling as a classifier, as shown in Fig. 9. This pipeline enables strong image recognition performance with efficient use of parameters.
 
 <p style="text-align:center">
 <img src="images/image14.png" width="560" alt="Fig 9: Complete CNN architecture"><br>

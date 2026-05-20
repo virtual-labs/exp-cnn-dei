@@ -24,13 +24,13 @@
         "a": "They cannot use activation functions",
         "b": "They ignore spatial relationships between pixels",
         "c": "They cannot be trained using gradient descent",
-        "d": "They require labeled data"
+        "d": "They always produce binary outputs"
       },
       "explanations": {
         "a": "Incorrect because fully connected networks can use activation functions.",
         "b": "Correct because flattening images destroys spatial locality information.",
         "c": "Incorrect because fully connected networks are trainable using gradient-based methods.",
-        "d": "Incorrect because labeled data is required by most supervised learning models."
+        "d": "Incorrect because a fully connected neural network can produce multi-class outputs using functions like softmax."
       },
       "correctAnswer": "b",
       "difficulty": "beginner"
@@ -55,18 +55,18 @@
     {
       "question": "4. What is the primary purpose of a convolution filter in a CNN?",
       "answers": {
-        "a": "To reduce the number of training samples",
-        "b": "To detect local patterns in the input image",
+        "a": "To detect local patterns in the input image",
+        "b": "To reduce the number of training samples",
         "c": "To normalize pixel values",
         "d": "To perform classification directly"
       },
       "explanations": {
-        "a": "Incorrect because filters operate on features, not on sample count.",
-        "b": "Correct because filters learn to identify features such as edges and textures.",
+        "a": "Correct because filters learn to identify features such as edges and textures.",
+        "b": "Incorrect because filters operate on features, not on sample count.",
         "c": "Incorrect because normalization is a preprocessing step.",
         "d": "Incorrect because classification is performed by the final layers."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "difficulty": "beginner"
     },
     {
@@ -90,30 +90,30 @@
       "question": "6. Why is the ReLU activation function commonly used in CNNs?",
       "answers": {
         "a": "It increases computational complexity",
-        "b": "It introduces non-linearity into the model",
+        "b": "It performs pooling",
         "c": "It converts images into vectors",
-        "d": "It performs pooling"
+        "d": "It introduces non-linearity into the model"
       },
       "explanations": {
-        "a": "Incorrect because ReLU actually reduces computational cost.",
-        "b": "Correct because non-linearity allows learning complex patterns.",
+        "a": "Incorrect because ReLU reduces computational cost.",
+        "b": "Incorrect because pooling is a separate operation.",
         "c": "Incorrect because flattening performs this operation.",
-        "d": "Incorrect because pooling is a separate operation."
+        "d": "Correct because non-linearity allows learning complex patterns."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "d",
       "difficulty": "beginner"
     },
     {
       "question": "7. What is the main purpose of pooling layers in CNNs?",
       "answers": {
         "a": "To increase the spatial dimensions of feature maps",
-        "b": "To reduce computational complexity",
+        "b": "To reduce spatial dimensions",
         "c": "To add non-linearity",
         "d": "To classify images"
       },
       "explanations": {
         "a": "Incorrect because pooling reduces spatial dimensions.",
-        "b": "Correct because pooling downsamples feature maps.",
+        "b": "Correct because pooling downsamples feature maps by reducing their width and height. This lowers computation and helps retain important features.",
         "c": "Incorrect because activation functions provide non-linearity.",
         "d": "Incorrect because classification is done by final layers."
       },
@@ -140,18 +140,18 @@
     {
       "question": "9. What advantage does parameter sharing provide in CNNs?",
       "answers": {
-        "a": "Increases the number of parameters",
-        "b": "Reduces overfitting and memory usage",
+        "a": "Reduces overfitting and memory usage",
+        "b": "Increases the number of parameters",
         "c": "Eliminates the need for training",
         "d": "Removes the need for activation functions"
       },
       "explanations": {
-        "a": "Incorrect because parameter sharing reduces parameters.",
-        "b": "Correct because fewer parameters improve generalization.",
+        "a": "Correct because fewer parameters improve generalization.",
+        "b": "Incorrect because parameter sharing reduces parameters.",
         "c": "Incorrect because training is still required.",
         "d": "Incorrect because activation functions are essential."
       },
-      "correctAnswer": "b",
+      "correctAnswer": "a",
       "difficulty": "beginner"
     },
     {
