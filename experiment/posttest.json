@@ -39,7 +39,7 @@
       "question": "3. Why is normalization applied to CIFAR-10 images before training the CNN?",
       "answers": {
         "a": "To convert images into grayscale",
-        "b": "To scale pixel values for stable and faster training",
+        "b": "To remove noise from the images",
         "c": "To reduce the dataset size",
         "d": "To scale pixel values for stable and faster training"
       },

@@ -8,11 +8,11 @@ Fully connected networks aren't ideal for images because flattening destroys spa
 
 A digital image can be represented as a 3D array (Tensor) with Height, Width, and Channels. For color images, the three channels correspond to RGB intensity values. For example, CIFAR-10 images are 32 × 32 pixels with three channels, giving an input tensor of shape 32 × 32 × 3. CNNs take this multi-dimensional input directly, preserving spatial and channel-wise information during processing.
 
-**III. Revised Data Normalization**
+**III. Data Normalization**
 
 Raw pixel values range from 0 to 255. Before training, we scale these values using a specific Mean and Standard Deviation (e.g., Mean: 0.4914, Std: 0.2470 for CIFAR-10). It scales input features to a similar range, ensuring gradient stability and allowing the model to converge (learn) faster.
 
-**IV. Revised Neurons in the Convolutional Layer**
+**IV. Neurons in the Convolutional Layer**
 
 **Local Connectivity:** Unlike standard neurons that try to look at an entire image at once, a CNN neuron focuses only on a small, specific window of the image called the receptive field. This "local connectivity" ensures the network can focus on small details rather than getting overwhelmed by the whole picture.
 
