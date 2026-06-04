@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNN Educational Playground</title>
+    <link rel="stylesheet" href="notebook.css">
+
+    <!-- Highlight.js for code highlighting -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+
+    <!-- Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- MathJax for math rendering -->
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+
+<body>
+    <aside class="step-sidebar">
+        <div class="step-sidebar-header">
+            <h3>Experiment Steps</h3>
+        </div>
+
+        <div id="toc-list" class="step-list">
+            <!-- TOC items injected by JS -->
+        </div>
+
+        <div class="step-sidebar-footer">
+            <button class="run-all-btn" id="run-all-btn">
+                Run All Cells
+            </button>
+            <button class="reset-btn" id="reset-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+                </svg>
+                Reset
+            </button>
+            <a href="../index.html" class="reset-btn"
+                style="text-decoration: none; justify-content: center; margin-top: 4px;">
+                Back to Home
+            </a>
+
+            <a href="../cnn_experiment.pdf" class="download-btn" download
+                style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                </svg>
+                Download Experiment
+            </a>
+
+            <div class="status-panel" style="margin-top: 10px;">
+                <div id="progress-text" style="font-size: 0.8rem; margin-bottom: 4px; color: var(--text-muted);">Ready
+                </div>
+                <div class="progress-bar-container"
+                    style="height: 4px; background: #e9ecef; border-radius: 2px; overflow: hidden;">
+                    <div id="progress-bar" class="progress-bar"
+                        style="height: 100%; width: 0%; background: #198754; transition: width 0.3s ease;"></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div class="notebook-area">
+        <div class="notebook-header">
+            <h1>CNN Educational Lab</h1>
+            <div class="notebook-subtitle">Building and Training a Convolutional Neural Network on CIFAR-10</div>
+        </div>
+
+        <main class="notebook-container" id="notebook-container">
+            <!-- Cells will be injected here by notebook.js -->
+            <div class="loading-overlay">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading notebook content...</div>
+            </div>
+        </main>
+    </div>
+
+    <script src="notebook.js"></script>
+</body>
+
+</html>

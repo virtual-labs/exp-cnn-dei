@@ -1,0 +1,19 @@
+{
+    "final_train_acc": 25.012,
+    "final_test_acc": 41.27,
+    "total_time": 16.166662454605103,
+    "history": {
+        "train_loss": [
+            2.0190387055697037
+        ],
+        "train_acc": [
+            25.012
+        ],
+        "test_loss": [
+            1.6456837065612213
+        ],
+        "test_acc": [
+            41.27
+        ]
+    }
+}
